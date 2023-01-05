@@ -1,0 +1,14 @@
+
+.h-screen-minus-nav{
+    height: calc(100vh - 4rem);
+    background: #003145;
+}
+.background-dark{
+    background: #002A3B;
+}
+.text-green-parrot{
+    color: #44924C
+}
+.bg-green-parrot{
+    background: #44924C
+}
