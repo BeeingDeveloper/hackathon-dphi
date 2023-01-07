@@ -1,8 +1,16 @@
 import React from 'react'
 import {RiSearchLine} from 'react-icons/ri'
-
+import THUMBNAIL from '../assets/images/cardimage/Group 1000002466.png'
 
 const ContestList = () => {
+
+    const data = {
+        thumbnail: THUMBNAIL,
+        name: "Data Science Bootcamp - Graded Datathon",
+        date: "00:15:22"
+    }
+
+
   return (
     <div className='h-auto lg:h-screen w-screen'>
         <div className='w-full background-dark'>
@@ -22,8 +30,18 @@ const ContestList = () => {
                 </div>
             </div>
 
-            <div className=''>
+            <div className='w-[95%] lg:w-[80%] m-auto  flex flex-col'>
 
+            </div>
+        </div>
+        <div className='w-[95%] lg:w-[80%] m-auto h-auto flex flex-col'>
+            <div className='w-[354px] text-center bg-white text-black font-semibold rounded-2xl'>
+                <img src={THUMBNAIL} className='w-[354px] h-[174px]' />
+                <div className='p-5'>
+                    <h3 className='text-xl h-20 '>{data.name}</h3>
+                    <h5 className='text-md h-20   font-semibold'>Starts In</h5>
+                    <h3 className='text-xl h-20 '>{data.date}</h3>
+                </div>
             </div>
         </div>
     </div>

@@ -6,9 +6,11 @@ const hackathon = require('../models/hackathon.model')
 router.post('/create', async(req, res)=>{
     const newHackathon = hackathon({
         name: req.body.name,
+        authorID: req.body.authorID,
         imageURL: req.body.imageURL,
         description: req.body.description,
-        hackathonTime: req.body.hackathonTime,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
         level: req.body.level,
     });
 

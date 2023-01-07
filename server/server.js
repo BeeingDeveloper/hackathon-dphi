@@ -5,7 +5,7 @@ require('dotenv').config();
 
 
 const app = express();
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5900
 
 
 
@@ -36,6 +36,10 @@ mongoose.connection.once('open', ()=>{
 //ROUTES----------------------------------------------------------------------------------------------
 const userRouter = require('./routes/userRouter');
 app.use('/api/user/', userRouter)
+
+const hackathonRouter = require('./routes/hackathonRouter');
+app.use('/api/hackathon/', hackathonRouter);
+
 
 
 app.listen(port, ()=>{
