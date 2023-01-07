@@ -4,6 +4,14 @@
 // ASSUMED THAT FIREBASE IS CONFIGURED IN firebase.config.js
 
 /*
+
+    PROCESS : 1. FIREBASE Generated Token will be parsed to backend server. 
+              2. Backend will decode the Token and send data to MongoDB data base. 
+              3. Look for if user Exist or Not.
+              4. backend will have access to firebase
+
+
+
     STEP: 1
         
         // INGREDIENTS----------------------------------
@@ -94,6 +102,31 @@
                 }
               })
             }, [])
+        //--------------------------------------------------------------------------------------
+   
+   
+
+
+
+
+
+        
+   
+   
+   
+   
+   
+   
+        STEP: 4
+
+        // INSIDE BACKEND FOLDER
+
+        // FIREBASE CONFIG FOR SERVER-----------------------------------------------------------
+            1. Create A folder: Config
+            2. Create A File: firebase.config.js
+            3. Go to firebase Project Setting --> User and Permissions --> Service Accounts
+            4. INSTALL firebase admin access to Backend Folder: npm i firebase-admin
+            
         //--------------------------------------------------------------------------------------
 
 

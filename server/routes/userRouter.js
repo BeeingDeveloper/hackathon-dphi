@@ -1,33 +1,82 @@
 const router = require('express').Router();
 const user = require('../models/user.model');
 
-router.post('/create', async(req, res)=>{
-    const newUser = user({
-        name: req.body.name,
-        email: req.body.email,
-        imageURL: req.body.imageURL,
-        userID: req.body.userID,
-        // bio: req.body.bio,
-        // participatedHackathon: req.body.participatedHackathon,
-    });
+const admin = require('../config/firebase.config');
 
-    // const email = req.body.email;
+// SIGN IN FUNCTIONALITY-----------------------------------------------------------------------------------------
+router.post('/signin', async(req, res)=>{
+    if(!req.headers.authorization){
+        return res.status(401).send({msg: "FALIURE"});
+    }
+
+    const token = req.headers.authorization.split(" ")[1];
 
     try {
-        const foundID = await user.find({email: req.body.email});
+        const decodeValue = await admin.auth().verifyIdToken(token);
 
-        if(foundID){
-            return res.status(200).send({success: true, data: "foundID[0]"});
+        if(!decodeValue){
+            return res.status(404).json({message: "Un Authorized User"});
         }else{
-            const savedUser = await newUser.save();
-            return res.status(200).send({success: true, data: savedUser});
+            const isUserExists = await user.findOne({'user_id': decodeValue.user_id});
+            
+            if(!isUserExists){
+                createNewUser(decodeValue, req, res);
+            }else{
+                updateUserData(decodeValue, req, res);
+            }
         }
+    } catch (error) {
+        
+    }
+});
+//-----------------------------------------------------------------------------------------------------------
 
+
+
+
+
+//CRAETE NEW USER FUNCTION-----------------------------------------------------------------------------------
+const createNewUser = async(decodeValue, req, res)=>{
+    const newUser = user({
+        name: decodeValue.name,
+        email: decodeValue.email,
+        imageURL: decodeValue.picture,
+        user_id: decodeValue.user_id,
+        email_verified: decodeValue.email_verified,
+        role: "member",
+        auth_time: decodeValue.auth_time
+    });
+
+    try {
+        const savedUser = await newUser.save();
+        return res.status(200).send({success: true, data: savedUser});
     } catch (error) {
         return res.status(400).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
+}
+//-----------------------------------------------------------------------------------------------------------
 
-});
+
+
+
+// UPDATE USER FUNCTIONALITY --------------------------------------------------------------------------------
+const updateUserData =async(decodeValue, req, res)=>{
+    const existUserID = {user_id: decodeValue.user_id};
+
+    const option = {
+        upsert: true,
+        new: true
+    }
+
+    try {
+        const updatedUser = await user.findOneAndUpdate(existUserID, {auth_time: decodeValue.auth_time}, option);
+        return res.status(200).send({success: true, data: updatedUser, msg:"USER UPDATED"})
+    } catch (error) {
+        return res.status(404).send({success: false, msg: "INTERNAL SERVER ERROR"});
+    }
+
+}
+
 
 
 
