@@ -1,33 +1,27 @@
 const router = require('express').Router();
 const user = require('../models/user.model');
 
-router.post('/create', async(req, res)=>{
-    const newUser = user({
-        name: req.body.name,
-        email: req.body.email,
-        imageURL: req.body.imageURL,
-        userID: req.body.userID,
-        // bio: req.body.bio,
-        // participatedHackathon: req.body.participatedHackathon,
-    });
+const admin = require('../config/firebase.config');
 
-    // const email = req.body.email;
+
+router.get('/signin', async(req, res)=>{
+    if(!req.headers.authorization){
+
+    }
+    const token = req.headers.authorization.split(" ")[1];
 
     try {
-        const foundID = await user.find({email: req.body.email});
-
-        if(foundID){
-            return res.status(200).send({success: true, data: "foundID[0]"});
+        const decodeValue = await admin.auth().verifyIdToken(token);
+        if(!decodeValue){
+            return res.status(404).send({msg: "No user found"});
         }else{
-            const savedUser = await newUser.save();
-            return res.status(200).send({success: true, data: savedUser});
+            return res.status(200).send(decodeValue)
         }
-
     } catch (error) {
-        return res.status(400).send({success: false, msg: "INTERNAL SERVER ERROR"});
+        return res.status(500).json({msg: "ERROR"})
     }
+})
 
-});
 
 
 

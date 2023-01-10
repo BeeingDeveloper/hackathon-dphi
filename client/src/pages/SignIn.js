@@ -32,20 +32,32 @@ const SignIn = ({setAuth}) => {
     // SIGN IN WITH GOOGLE-------------------------------------------------------------------
         const signInWithGoogle = async()=>{
             await signInWithPopup(firebaseAuth, authProvider).then((userInfo)=>{
+                // if(userInfo){
+                //     setAuth(true);
+                //     window.localStorage.setItem('auth', 'true');
+
+                //     firebaseAuth.onAuthStateChanged((userInfo)=>{
+                //         if(userInfo){
+                //             userInfo.getIdToken().then((token)=>{
+                //                 console.log(token);
+                //             });
+                            
+                //             // navigate('/')
+                //         }else{
+                //             setAuth(false);
+                //             // navigate('/signin');
+                //         }
+                //     })
+                // }
                 if(userInfo){
                     setAuth(true);
                     window.localStorage.setItem('auth', 'true');
 
-                    firebaseAuth.onAuthStateChanged((userInfo)=>{
-                        if(userInfo){
-                            userInfo.getIdToken().then((token)=>{
+                    firebaseAuth.onAuthStateChanged((userCred)=>{
+                        if(userCred){
+                            userCred.getIdToken().then((token)=>{
                                 console.log(token);
-                            })
-                            
-                            navigate('/')
-                        }else{
-                            setAuth(false);
-                            navigate('/signin');
+                            });
                         }
                     })
                 }
@@ -70,7 +82,7 @@ const SignIn = ({setAuth}) => {
     //--------------------------------------------------------------------------------------
     useEffect(()=>{
         if(window.localStorage.getItem('auth') === 'true'){
-            navigate('/')
+            // navigate('/')
         }
     },[])
 

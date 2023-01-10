@@ -25,15 +25,19 @@ function App() {
 
   useEffect(() => {
     firebaseAuth.onAuthStateChanged((userInfo)=>{
-      if(userInfo){
-        userInfo.getIdToken().then((token)=>{
-          console.log(token)
-        })
-      }else{
-        setAuth(false);
-        window.localStorage.setItem('auth', 'false');
+      // if(userInfo){
+      //   userInfo.getIdToken().then((token)=>{
+      //     console.log(token)
+      //   })
+      // }else{
+      //   setAuth(false);
+      //   window.localStorage.setItem('auth', 'false');
 
-      }
+      // }
+
+      console.log(userInfo.accessToken)
+      
+
     })
   }, [])
 
