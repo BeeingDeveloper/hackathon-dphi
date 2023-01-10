@@ -5,7 +5,7 @@ const baseURL = `http://localhost:5900/`;
 
 export const createNewUser = async(data)=>{
     try {
-        const res = await axios.post(`${baseURL}api/user/create`, {...data});
+        const res = await axios.post(`${baseURL}api/user/signin`, {...data});
         return res.data;
     } catch (error) {
         return null;
