@@ -1,52 +1,83 @@
 const router = require('express').Router();
 const user = require('../models/user.model');
-
 const admin = require('../config/firebase.config');
 
 
-router.get('/signin', async(req, res)=>{
-    if(!req.headers.authorization){
 
+router.get('/signin', async(req, res)=>{
+
+    if(!req.headers.authorization){
+        return res.status(404).send({msg: "INVALID USER CREDENTIALS"});
     }
+
     const token = req.headers.authorization.split(" ")[1];
 
     try {
-        const decodeValue = await admin.auth().verifyIdToken(token);
-        if(!decodeValue){
-            return res.status(404).send({msg: "No user found"});
+        const decodedValue = await admin.auth().verifyIdToken(token);
+        
+        if(!decodedValue){
+            return res.status(400).send({msg: "UN AUTHORIZED USER"});
         }else{
-            return res.status(200).send(decodeValue)
+            const isUserExist = await user.findOne({"user_id": decodedValue.user_id});
+            if(!isUserExist){
+                return createNewUser(decodedValue, req, res);
+            }else{
+                return updateExistingUser(decodedValue, req, res);
+
+            }
         }
     } catch (error) {
-        return res.status(500).json({msg: "ERROR"})
+        return res.status(505).json({msg: "INTERNAL SERVER ERROR"});
     }
-})
+
+});
+
+
+
+//  CREATE NEW USER-----------------------------------------------------
+const createNewUser = async(decodedValue, req, res)=>{
+    const newUser = new user({
+        name: decodedValue.name,  
+        email: decodedValue.email,  
+        imageURL: decodedValue.picture,
+        user_id: decodedValue.user_id,
+        email_verified: decodedValue.email_verified,
+        role: "member",
+        auth_time: decodedValue.auth_time,  
+    });
+            
+    try {
+        const savedUser = await newUser.save();
+        return res.status(200).send({success: true, data: savedUser});
+    } catch (error) {
+       
+    }
+}
+//---------------------------------------------------------------------
 
 
 
 
-router.get('/get/:emailid', async(req, res)=>{
 
-    const userEmail =  req.params.emailid
+
+
+// UPDATE NEW USER-----------------------------------------------------
+const updateExistingUser = async(decodedValue, req, res)=>{
+    const userID = {user_id: decodedValue.user_id};
+    const options = {
+        upsert: true,
+        new: true,
+    }
 
     try {
-        const getUser = await user.findOne({email: userEmail});
-        return res.status(200).send({success: true, data: getUser});
+        const existingUser = await user.findOneAndUpdate(userID, {auth_time: decodedValue.auth_time});
+        res.status(200).send(existingUser);
     } catch (error) {
-        return res.status(400).send({success: false, msg: 'INTERNAL SERVER ERROR'});
+        res.status(400).send({success: false, msg: "THERE IS AN ERROR TO CREATE NEW USER"});
     }
-})
+}
+//---------------------------------------------------------------------
 
 
-
-
-router.get('/get', async(req, res)=>{
-    try {
-        const allUser = await user.find().populate('hackathon');
-        return res.status(200).send({success: true, data: allUser});
-    } catch (error) {
-        return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
-    }
-})
 
 module.exports = router;
