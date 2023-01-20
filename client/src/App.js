@@ -6,7 +6,7 @@ import CreateChallenges from './pages/CreateChallenges';
 import SignIn from './pages/SignIn';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from './context/StateProvider';
-import { fetchUserData } from './api/api';
+import { fetchUserData, validateUser } from './api/api';
 import { actionType } from './context/reducer';
 import { getAuth } from 'firebase/auth';
 import { firebaseApp } from './config/firebase.config';
@@ -25,24 +25,24 @@ function App() {
 
   useEffect(() => {
     firebaseAuth.onAuthStateChanged((userInfo)=>{
-      // if(userInfo){
-      //   userInfo.getIdToken().then((token)=>{
-      //     console.log(token)
-      //   })
-      // }else{
-      //   setAuth(false);
-      //   window.localStorage.setItem('auth', 'false');
+      if(userInfo){
+        userInfo.getIdToken().then((token)=>{
+          validateUser(token).then((data)=>{
+            dispatch({type: actionType.SET_USER, user: data});
+          })
+        })
+      }else{
+        setAuth(false);
+        window.localStorage.setItem('auth', 'false');
 
-      // }
+      }
 
       console.log(userInfo.accessToken)
       
-
     })
   }, [])
 
 
-console.log(firebaseAuth)
 
   return (
     <div className="">

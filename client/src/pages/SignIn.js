@@ -3,7 +3,7 @@ import '../utils/style.css'
 import {FcGoogle} from 'react-icons/fc'
 import {signInWithPopup, GoogleAuthProvider, getAuth} from 'firebase/auth'
 import { auth } from '../config/firebase.config'
-import { createNewUser } from '../api/api'
+import { createNewUser, validateUser } from '../api/api'
 import { StateContext } from '../context/StateProvider'
 import { actionType } from '../context/reducer'
 import { firebaseApp} from '../config/firebase.config'
@@ -32,23 +32,6 @@ const SignIn = ({setAuth}) => {
     // SIGN IN WITH GOOGLE-------------------------------------------------------------------
         const signInWithGoogle = async()=>{
             await signInWithPopup(firebaseAuth, authProvider).then((userInfo)=>{
-                // if(userInfo){
-                //     setAuth(true);
-                //     window.localStorage.setItem('auth', 'true');
-
-                //     firebaseAuth.onAuthStateChanged((userInfo)=>{
-                //         if(userInfo){
-                //             userInfo.getIdToken().then((token)=>{
-                //                 console.log(token);
-                //             });
-                            
-                //             // navigate('/')
-                //         }else{
-                //             setAuth(false);
-                //             // navigate('/signin');
-                //         }
-                //     })
-                // }
                 if(userInfo){
                     setAuth(true);
                     window.localStorage.setItem('auth', 'true');
@@ -56,7 +39,9 @@ const SignIn = ({setAuth}) => {
                     firebaseAuth.onAuthStateChanged((userCred)=>{
                         if(userCred){
                             userCred.getIdToken().then((token)=>{
-                                console.log(token);
+                                validateUser(token).then((data)=>{
+                                    console.log(data);
+                                })
                             });
                         }
                     })

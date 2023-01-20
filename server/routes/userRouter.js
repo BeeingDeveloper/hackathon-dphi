@@ -19,18 +19,21 @@ router.get('/signin', async(req, res)=>{
             return res.status(400).send({msg: "UN AUTHORIZED USER"});
         }else{
             const isUserExist = await user.findOne({"user_id": decodedValue.user_id});
-            if(!isUserExist){
+            if(!isUserExist){   // IF THERE IS NO USER IN MONGODB DATABASE
                 return createNewUser(decodedValue, req, res);
             }else{
                 return updateExistingUser(decodedValue, req, res);
-
             }
         }
     } catch (error) {
         return res.status(505).json({msg: "INTERNAL SERVER ERROR"});
     }
-
 });
+
+
+
+
+
 
 
 
