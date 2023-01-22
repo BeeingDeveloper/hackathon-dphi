@@ -58,3 +58,15 @@ export const createNewHackathon = async(data)=>{
 
 
 
+
+
+export const fetchHackathons = async()=>{
+    try {
+        const res = await axios.get(`${baseURL}api/hackathon/get-hackathons`);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+

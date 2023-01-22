@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import {RiSearchLine} from 'react-icons/ri'
-import THUMBNAIL from '../assets/images/cardimage/Group 1000002466.png'
+import { fetchHackathons } from '../api/api'
+import { actionType } from '../context/reducer'
+import { StateContext } from '../context/StateProvider'
+import ChallengeCard from './ChallengeCard'
 
 const ContestList = () => {
 
-    const data = {
-        thumbnail: THUMBNAIL,
-        name: "Data Science Bootcamp - Graded Datathon",
-        date: "00:15:22"
-    }
+    const {state, dispatch} = useContext(StateContext);
+    const {hackathons} = state;
 
+    useEffect(() => {
+        fetchHackathons().then((res)=>{
+            dispatch({type: actionType.SET_HACKTHONS, hackathons: res.data});
+        })
+    }, [])
+    
 
   return (
     <div className='h-auto lg:h-screen w-screen'>
@@ -23,7 +29,7 @@ const ContestList = () => {
                     </div>
                     <button className='bg-white p-2 px-4 rounded-md font-semibold'>Filter</button>
                 </div>
-                <div className=' '>
+                <div className=''>
                     <div className='flex'>
                         <h2>buttons</h2>
                     </div>
@@ -34,15 +40,12 @@ const ContestList = () => {
 
             </div>
         </div>
-        <div className='w-[95%] lg:w-[80%] m-auto h-auto flex flex-col'>
-            <div className='w-[354px] text-center bg-white text-black font-semibold rounded-2xl'>
-                <img src={THUMBNAIL} className='w-[354px] h-[174px]' />
-                <div className='p-5'>
-                    <h3 className='text-xl h-20 '>{data.name}</h3>
-                    <h5 className='text-md h-20   font-semibold'>Starts In</h5>
-                    <h3 className='text-xl h-20 '>{data.date}</h3>
-                </div>
-            </div>
+        <div className='w-[95%] lg:w-[80%] m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20'>
+            {
+                hackathons?.map((elm, i)=>{
+                    return <ChallengeCard key={i}  />
+                })
+            }
         </div>
     </div>
   )

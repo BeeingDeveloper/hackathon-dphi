@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import CALENDER from '../assets/images/icons/uil_calender.svg'
 import '../utils/style.css'
 import {motion} from 'framer-motion'
@@ -12,6 +12,8 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { createNewHackathon } from '../api/api'
+import { StateContext } from '../context/StateProvider'
 
 
 
@@ -35,6 +37,15 @@ const UploadingUI = ({imageUploadingProgress})=>{
         </div>
     )
 }
+
+
+
+
+
+
+
+
+
 
 
 const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingProgress})=>{
@@ -106,6 +117,21 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================  STARING COMOPOENT========================================
+
 const CreateChallenges = () => {
 
     const [isImageLoading, setIsImageLoading] = useState(false);
@@ -118,7 +144,9 @@ const CreateChallenges = () => {
     const [imageURL, setImageURL] = useState(null);
     const [level, setLevel] = useState('Level 1');
 
-    // console.log()
+    const {state, dispatch} = useContext(StateContext);
+    const {hackathons} = state
+
 
     const handleStartDate = (newDate) => {
         setStartDate(newDate);
@@ -128,7 +156,7 @@ const CreateChallenges = () => {
     };
 
     const createHackathon = ()=>{
-        const data = {
+        const newHackathon = {
             name: challengeName,
             authorID: "dljd",
             imageURL: imageURL,
@@ -137,6 +165,11 @@ const CreateChallenges = () => {
             endDate: endDate,
             level: level,  
         }
+
+        createNewHackathon().then((res)=>{
+            
+        })
+
     }
 
 
@@ -227,7 +260,11 @@ const CreateChallenges = () => {
                     <option value='Level 3'>Level 3</option>
                 </select>
 
-                <motion.button whileHover={{scale: 0.95}} className='p-3 bg-green-parrot w-fit px-10 text-white rounded-md'>Save Changes</motion.button>
+                <motion.button 
+                    whileHover={{scale: 0.95}} 
+                    className='p-3 bg-green-parrot w-fit px-10 text-white rounded-md'
+                    onClick={createHackathon}
+                >Create Challenge</motion.button>
             </div>
 
         </div>

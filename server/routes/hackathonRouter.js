@@ -26,14 +26,15 @@ router.post('/create', async(req, res)=>{
 
 
 
-router.get('/get', async(req, res)=>{
+router.get('/get-hackathons', async(req, res)=>{
+    const allHackathons = await hackathon.find();
+
     try {
-        const allHackathon = await hackathon.find().sort({createdAt: 1});
-        return res.status(200).send({success: true, data: allHackathon});
+        return res.status(200).send({success: true, data: allHackathons});
     } catch (error) {
-        return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
+        return res.status(400).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
-});
+})
 
 
 

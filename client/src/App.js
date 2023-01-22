@@ -6,7 +6,7 @@ import CreateChallenges from './pages/CreateChallenges';
 import SignIn from './pages/SignIn';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from './context/StateProvider';
-import { fetchUserData, validateUser } from './api/api';
+import { fetchHackathons, fetchUserData, validateUser } from './api/api';
 import { actionType } from './context/reducer';
 import { getAuth } from 'firebase/auth';
 import { firebaseApp } from './config/firebase.config';
@@ -39,6 +39,11 @@ function App() {
       }
 
       
+    });
+
+
+    fetchHackathons().then((res)=>{
+      dispatch({type: actionType.SET_HACKTHONS, hackathons: res.data});
     })
   }, [])
 
