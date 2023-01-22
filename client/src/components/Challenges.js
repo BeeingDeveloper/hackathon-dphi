@@ -11,7 +11,7 @@ const Challenges = () => {
             {
               challenges.map((elm, i)=>{
                 return (
-                  <div className='text-black bg-slate-200 p-5 m-5 w-fit rounded-lg'>
+                  <div className='text-black bg-slate-200 p-5 m-5 w-fit rounded-lg' key={i}>
                     <img src={elm.icon} alt='icon' className='my-5' />
                     <h2 className='text-2xl font-bold my-5'>{elm.heading}</h2>
                     <p className='text-md text-slate-500 my-5'>{elm.description}</p>

@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 import Home from './pages/Home';
 import CreateChallenges from './pages/CreateChallenges';
 import SignIn from './pages/SignIn';
@@ -14,7 +14,7 @@ import { firebaseApp } from './config/firebase.config';
 // import firebase from 'firebase/compat';
 
 function App() {
-
+  const navigate = useNavigate();
   const {state, dispatch} = useContext(StateContext);
   const {user, hackathons} = state;
 
@@ -29,15 +29,15 @@ function App() {
         userInfo.getIdToken().then((token)=>{
           validateUser(token).then((data)=>{
             dispatch({type: actionType.SET_USER, user: data});
+            navigate('/');
           })
         })
       }else{
         setAuth(false);
         window.localStorage.setItem('auth', 'false');
-
+        navigate('/signin');
       }
 
-      console.log(userInfo.accessToken)
       
     })
   }, [])
