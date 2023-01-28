@@ -6,19 +6,15 @@ import { storage, } from '../config/firebase.config'
 import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage'
 import {MdCloudUpload} from 'react-icons/md'
 import {MdDeleteForever} from 'react-icons/md'
-import dayjs from 'dayjs';
+
+import { createNewHackathon, fetchHackathons } from '../api/api'
+import { StateContext } from '../context/StateProvider'
+import { actionType } from '../context/reducer'
+
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { createNewHackathon } from '../api/api'
-import { StateContext } from '../context/StateProvider'
 
-
-
-
-
+import DatePicker from 'react-date-picker';
 
 
 
@@ -134,31 +130,86 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
 
 const CreateChallenges = () => {
 
+    const {state, dispatch} = useContext(StateContext);
+    const {hackathons, user} = state
+    
+    const userID = user?.user_id;
+
+    //CONVERT TIME TO MONGODB------------------------------------------------------------------
+    const convertDefaultDate = (systemDate)=>{
+        const localDate = systemDate.toLocaleDateString();
+        const localTime = systemDate.toTimeString();
+        let getDay = localDate.split('/')[1];
+        let getMonth =  localDate.split('/')[0];
+        let getYear = systemDate.getFullYear();
+
+        getDay = getDay < 10 ? `0${getDay}` : getDay;
+        getMonth = getMonth < 10 ? `0${getMonth}` : getMonth;
+
+        const finalTime = `${getYear}-${getMonth}-${getDay}T${localTime.slice(0,8)}.000+00:00`
+        return finalTime;
+    }
+    //-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+    //STATE VALUE------------------------------------------------------------
     const [isImageLoading, setIsImageLoading] = useState(false);
     const [imageUploadingProgress, setImageUploadingProgress] = useState(0);
 
     const [challengeName, setChallengeName] = useState('');
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(convertDefaultDate(new Date));
+    const [endDate, setEndDate] = useState(convertDefaultDate(new Date));
     const [description, setDescription] = useState('');
     const [imageURL, setImageURL] = useState(null);
     const [level, setLevel] = useState('Level 1');
 
-    const {state, dispatch} = useContext(StateContext);
-    const {hackathons} = state
+    //-----------------------------------------------------------------------
 
 
-    const handleStartDate = (newDate) => {
-        setStartDate(newDate);
+
+
+
+
+
+    //CONVERT TIME TO MONGODB------------------------------------------------
+    const convertTimeToMongoDB =(localTime)=>{
+        const getDate = localTime;
+        const year = getDate.slice(0,10);
+        const time = getDate.slice(11, 16);
+        const newTime = `${year}T${time}:00.000+00:00`
+        return newTime;
+    }
+    //-----------------------------------------------------------------------
+
+
+
+
+    //HANDLE START DATE------------------------------------------------------
+    const handleStartDate = (e) => {
+        setStartDate(convertTimeToMongoDB(e.target.value)); 
     };
-    const handleEndDate = (newDate) => {
-        setEndDate(newDate);
-    };
+    //-----------------------------------------------------------------------
 
+
+
+    //END DATE---------------------------------------------------------------
+    const handleEndDate = (e) => {
+        setEndDate(convertTimeToMongoDB(e.target.value));
+    };
+    //-----------------------------------------------------------------------
+
+
+
+    // API FUNCTION FOR NEW HACKATHON
     const createHackathon = ()=>{
         const newHackathon = {
             name: challengeName,
-            authorID: "dljd",
+            authorID: userID,
             imageURL: imageURL,
             description: description,
             startDate: startDate,
@@ -166,12 +217,11 @@ const CreateChallenges = () => {
             level: level,  
         }
 
-        createNewHackathon().then((res)=>{
-            
-        })
+        createNewHackathon(newHackathon).then((res)=>{
+            dispatch({type: actionType.SET_HACKTHONS, hackathons: res.data});
+        });
 
     }
-
 
   return (
     <div className='h-auto lg:h-screen w-screen'>
@@ -195,33 +245,66 @@ const CreateChallenges = () => {
 
 
 
+
+
+
             <div className='flex flex-col gap-5 lg:w-[40%] '>
                 <h2 className='text-lg font-semibold'>Start Date</h2>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DateTimePicker
-                          value={startDate}
-                          onChange={handleStartDate}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                </LocalizationProvider>
+                <div className='flex justify-between border-2 border-slate-400 rounded-md p-1'>
+                    <input 
+                        value={startDate}
+                        placeholder='enter date'
+                        className='outline-none w-[90%]'
+                        disabled={true}
+                    />
+                    
+                    <input
+                      id="datetime-local"
+                      type="datetime-local"
+                      defaultValue={new Date()}
+                      placeholder=''
+                    //   value={startDate}
+                      onChange={handleStartDate}
+                      className='w-[1.2rem] h-[2rem] bg-slate-300 rounded-md m-1 outline-none cursor-pointer'
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                    />
+                </div>
             </div>
 
 
 
             <div className='flex flex-col gap-5 lg:w-[40%] '>
                 <h2 className='text-lg font-semibold'>End Date</h2>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={4}>
-                        <DateTimePicker
-                          value={endDate}
-                          onChange={handleEndDate}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                </LocalizationProvider>
+                <div className='flex justify-between border-2 border-slate-400 rounded-md p-1'>
+                    <input 
+                        value={endDate}
+                        placeholder='enter date'
+                        className='outline-none w-[90%]'
+                        disabled={true}
+                    />
+                    
+                    <input
+                      id="datetime-local"
+                      type="datetime-local"
+                      defaultValue={new Date()}
+                      placeholder=''
+                    //   value={endDate}
+                      onChange={handleEndDate}
+                      className='w-[1.2rem] h-[2rem] bg-slate-300 rounded-md m-1 outline-none cursor-pointer'
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                    />
+                </div>
             </div>
+
+
+
+
+
+
 
             
             <div className='flex flex-col gap-5 w-[67%] lg:w-[40%] '>

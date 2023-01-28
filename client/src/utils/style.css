@@ -12,3 +12,17 @@
 .bg-green-parrot{
     background: #44924C
 }
+
+
+.status-upcoming{
+    background: #F2C94C;
+    color: #000000;
+}
+.status-active{
+    background: #44924ca9;
+    color: white;
+}
+.status-past{
+    background: #FF3C00;
+    color: black;
+}

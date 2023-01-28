@@ -16,6 +16,7 @@ const ContestList = () => {
         })
     }, [])
     
+    // console.log(hackathons)
 
   return (
     <div className='h-auto lg:h-screen w-screen'>
@@ -43,7 +44,17 @@ const ContestList = () => {
         <div className='w-[95%] lg:w-[80%] m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20'>
             {
                 hackathons?.map((elm, i)=>{
-                    return <ChallengeCard key={i}  />
+                    return (
+                        <ChallengeCard 
+                            key={i}
+                            name={elm.name} 
+                            imageURL={elm.imageURL} 
+                            description={elm.description} 
+                            startDate={elm.startDate}
+                            endDate={elm.endDate}
+                            level={elm.level} 
+                            />
+                    )
                 })
             }
         </div>
