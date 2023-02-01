@@ -34,6 +34,67 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
 
 
 
+
+
+    //================================== MANAGING END DATE ===========================================
+    let challengeEndDate = '';
+    let challengeEndTime = '';
+
+    if(status === 'Past'){
+        challengeEndDate = new Date(endDate).toDateString();
+        challengeEndTime = new Date(endDate).toLocaleTimeString();
+    }
+    let modifyDay = challengeEndDate.slice(8, 10);
+    let modifyTime = '';
+    // console.log(challengeEndTime.length)
+
+    
+    let addSuffixTodate = '';
+
+
+    if(modifyDay.length === 1){
+        if(modifyDay === 1){
+            addSuffixTodate = `${modifyDay}st`;
+        }else if(modifyDay === 2){
+            addSuffixTodate = `${modifyDay}nd`;
+        }else if(modifyDay === 3){
+            addSuffixTodate = `${modifyDay}rd`;
+        }else{
+            addSuffixTodate = `${modifyDay}th`;
+        }
+    }else{
+        if(modifyDay.charAt(1) === 1){
+            addSuffixTodate = `${modifyDay}st`;
+        }else if(modifyDay === 2){
+            addSuffixTodate = `${modifyDay}nd`;
+        }else if(modifyDay === 3){
+            addSuffixTodate = `${modifyDay}rd`;
+        }else{
+            addSuffixTodate = `${modifyDay}th`;
+        }
+    }
+    
+    if(challengeEndTime.length === 10){
+        modifyTime = `${challengeEndTime.slice(0, 4)} ${challengeEndTime.slice(8, 11)}`
+    }
+
+
+    let modifyEndDate = `${addSuffixTodate} 
+                        ${challengeEndDate.slice(4, 7)}'
+                        ${challengeEndDate.slice(13, 15)} 
+                        ${modifyTime}`
+
+
+    //================================== MANAGING END DATE ===========================================
+
+
+
+
+
+
+
+
+
     //================================= COUNT DOWN FUNCTION ==================================
     const countDownFunction = (remainingTime, oneDay, oneHr, oneMin)=>{
 
@@ -43,6 +104,9 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
         setSecLeft(Math.floor((remainingTime % oneMin) / 1000));
     }
     //================================= COUNT DOWN FUNCTION ====================================
+
+
+
 
 
 
@@ -69,6 +133,8 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
 
 
 
+
+
     //================================== OPTIMISING COUNTDOWN ==================================
     const countDown =()=>{
         if(systemTime === startTime){
@@ -89,8 +155,7 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
             }
         }
     }
-
-
+    //================================== OPTIMISING COUNTDOWN ==================================
 
 
 
@@ -100,62 +165,59 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
 
     const countDownStart = ()=>{
         const timer = setInterval(() => {
-            // if(status === 'Active' && status === 'Upcoming'){
-                countDown();
-            // }
+            countDown();
         }, 1000);
 
         return ()=>clearTimeout(timer);
     }
 // ===================================== HANDLING COUNTDOWN ===========================================
 
-    // let data = <h2>Text</h2>
-
-    // switch (status) {
-    //     case 'Upcoming':
-    //         data = (<h2>Upcoming</h2>)
-    //         break;
-    
-    //     default:
-    //         break;
-    // }
 
     useEffect(() => {
-        countDownStart();
+        if(status === 'Active' || status === 'Upcoming'){
+                countDownStart();
+        }
     }, []);
     
 
   return (
-    <div className='w-[354px] h-[473px] text-center bg-white text-black font-semibold rounded-2xl my-3 flex flex-col gap-2 m-10'>
+    <div className='w-[354px] text-center bg-white text-black font-semibold rounded-2xl my-3 flex flex-col gap-2 m-10'>
         <img src={imageURL} className='w-[354px] h-[174px] rounded-t-2xl ' />
-        <div className='p-5 rounded-b-2xl flex flex-col'>
+        <div className='px-10 py-5 flex flex-col gap-5'>
             {status === 'Active' && <h3 className='bg-green-300 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Active</h3>}
             {status === 'Upcoming' && <h3 className='bg-orange-200 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Upcoming</h3>}
             {status === 'Past' && <h3 className='bg-red-300 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Past</h3>}
-            <h3 className=' h-[44px] my-5 font-[16px]'>{name}</h3>
-            <p className='text-slate-600 font-[500] my-1 '>
-                {status === 'Active' && <h3 className='bg-green-300 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Ends in</h3>}
-                {status === 'Upcoming' && <h3 className='bg-orange-200 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Starts in</h3>}
-                {status === 'Past' && <h3 className='bg-red-300 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Ended on</h3>}
-            </p>
+            <h3 className=' h-[44px]  font-[16px] '>{name}</h3>
+            
+            
+            <div className=' text-slate-600 '>
+                <p className='text-slate-600 font-[500] my-1 '>
+                    {status === 'Active' && <h3 className='w-fit m-auto p-1 rounded-md text-[14px]'>Ends in</h3>}
+                    {status === 'Upcoming' && <h3 className='w-fit m-auto p-1 rounded-md text-[14px]'>Starts in</h3>}
+                    {status === 'Past' && <h3 className='w-fit m-auto p-1 rounded-md text-[14px]'>Ended on</h3>}
+                </p>          
 
-            <div className=' text-slate-600 my-2 '>
                 <p className='w-fit m-auto text-xs flex flex-col gap-2'>
-                    <div className='flex text-2xl gap-4  justify-center items-center'>
-                        <p className='w-8'>{hrsLeft<10 ? `0${hrsLeft}` : hrsLeft}</p> :
-                        <p className='w-8'>{minLeft<10 ? `0${minLeft}` : minLeft} </p> :
-                        <p className='w-8'>{secLeft<10 ? `0${secLeft}` : secLeft}</p>
-                        {/* {data} */}
-                    </div>
-                    <div className='flex gap-10 text-[0.7rem]'>
+                    {challengeEndDate ? (
+                        <h2 className='text-xl'>{modifyEndDate}</h2>
+                    ) : (
+                        <div className='flex text-xl gap-4  justify-center items-center'>
+                            <p className='w-8'>{dayLeft<10 ? `0${dayLeft}` : dayLeft}</p> :
+                            <p className='w-8'>{hrsLeft<10 ? `0${hrsLeft}` : hrsLeft} </p> :
+                            <p className='w-8'>{minLeft<10 ? `0${minLeft}` : minLeft}</p>
+                        </div>
+                    )}
+
+                    <div className='flex gap-10 text-[0.7rem] w-fit m-auto'>
+                        <p>Days</p>
                         <p>Hours</p>
                         <p>Mins</p>
-                        <p>Secs</p>
                     </div>
                 </p>
             </div>
 
-            <button className='bg-green-parrot w-fit px-5 m-auto my-2 p-3 rounded-xl text-white font-[600] flex gap-2 transition-all duration-150 ease-in hover:scale-90'>
+            <button className=' bg-green-parrot w-fit px-5 m-auto p-3 my-2 rounded-xl text-white font-[600] 
+                                flex gap-2 transition-all duration-150 ease-in hover:scale-90'>
                 <BsCheck2Circle className='text-[1.35rem]' />
                 <p>Participate Now</p>
             </button>
@@ -165,3 +227,4 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
 }
 
 export default ChallengeCard
+

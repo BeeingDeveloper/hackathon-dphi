@@ -26,3 +26,15 @@
     background: #FF3C00;
     color: black;
 }
+
+
+.background-dark-green{
+    background: #002A3B;
+}
+.background-light-dark-green{
+    background: #003145;
+}
+
+.border-parrot{
+    border-color: #44924C
+}

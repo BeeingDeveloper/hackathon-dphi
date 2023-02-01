@@ -10,6 +10,7 @@ import { fetchHackathons, fetchUserData, validateUser } from './api/api';
 import { actionType } from './context/reducer';
 import { getAuth } from 'firebase/auth';
 import { firebaseApp } from './config/firebase.config';
+import AdminPanel from './pages/AdminPanel';
 // import StateProvider from './context/StateProvider';
 // import firebase from 'firebase/compat';
 
@@ -56,6 +57,7 @@ function App() {
           <Route path='/' element={<Home  /> } />
           <Route path='/create-challenge' element={<CreateChallenges /> } />
           <Route path='/signin' element={<SignIn setAuth={setAuth} />} />
+          <Route path='/dashboard/*' element={<AdminPanel />} />
         </Routes>
     </div>
   );

@@ -19,7 +19,7 @@ const ContestList = () => {
     // console.log(hackathons)
 
   return (
-    <div className='h-auto lg:h-screen w-screen bg-red-300'>
+    <div className='h-auto lg:h-screen w-screen '>
         <div className='w-full background-dark'>
             <div className='w-[95%] lg:w-[80%] m-auto py-20 flex flex-col'>
                 <h2 className='w-fit m-auto text-2xl font-semibold my-10'>Explore Challenges</h2>
@@ -41,7 +41,7 @@ const ContestList = () => {
 
             </div>
         </div>
-        <div className='w-[95%] lg:w-[80%] bg-red-500 m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20'>
+        <div className='w-[95%] lg:w-[85%] m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20'>
             {
                 hackathons?.map((elm, i)=>{
                     return (

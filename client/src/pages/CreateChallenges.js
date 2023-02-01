@@ -11,11 +11,6 @@ import { createNewHackathon, fetchHackathons } from '../api/api'
 import { StateContext } from '../context/StateProvider'
 import { actionType } from '../context/reducer'
 
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-
-import DatePicker from 'react-date-picker';
-
 
 
 const UploadingUI = ({imageUploadingProgress})=>{
@@ -218,11 +213,20 @@ const CreateChallenges = () => {
         }
 
         createNewHackathon(newHackathon).then((res)=>{
-            dispatch({type: actionType.SET_HACKTHONS, hackathons: res.data});
+            fetchHackathons().then((result)=>{
+                dispatch({type: actionType.SET_HACKTHONS, hackathons: result.data});
+            })
         });
 
+        setChallengeName('');
+        setStartDate(new Date());
+        setEndDate(new Date());
+        setDescription('');
+        setImageURL(null);
+        setLevel('Level 1');
     }
 
+    
   return (
     <div className='h-auto lg:h-screen w-screen'>
         <div className='w-full h-20 bg-slate-200'>

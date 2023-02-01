@@ -31,10 +31,13 @@ const Navbar = () => {
       dispatch({type: actionType.SET_USER, user: null});
       navigate('/signin');
     }).catch((err)=>{
-      
+      console.log(err);
     })
-
   }
+
+  
+
+
 
   return (
     <nav className='w-screen h-16 bg-slate-500 z-50'>
@@ -73,12 +76,13 @@ const Navbar = () => {
                   </PopoverTrigger>
                   <Portal  >
                     <PopoverContent className='bg-green-parrot w-44 text-slate-200 font-semibold shadow-2xl shadow-red-500 rounded-lg p-2'>
-                      <div className='flex flex-col'>
+                      <div className='flex flex-col gap-2'>
                           <motion.p 
                             className=' cursor-pointer' 
                             whileHover={{scale: 0.95}}
                             onClick={signOut}
                           >Sign Out</motion.p>
+                          {user?.role === 'admin' && (<Link to='/dashboard'>Dashboard</Link>)}
                       </div>
                     </PopoverContent>
                   </Portal>
