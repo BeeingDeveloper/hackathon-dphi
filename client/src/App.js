@@ -51,9 +51,9 @@ function App() {
 
   return (
     <div className="">
-        <Navbar />
+        <Navbar setAuth={setAuth} auth={auth} />
         <Routes>
-          <Route path='/' element={<Home /> } />
+          <Route path='/' element={<Home  /> } />
           <Route path='/create-challenge' element={<CreateChallenges /> } />
           <Route path='/signin' element={<SignIn setAuth={setAuth} />} />
         </Routes>

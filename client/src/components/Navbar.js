@@ -13,6 +13,7 @@ import {
 import {motion} from 'framer-motion';
 import {getAuth} from 'firebase/auth'
 import {firebaseApp} from '../config/firebase.config'
+import { actionType } from '../context/reducer'
 
 
 const Navbar = () => {
@@ -27,6 +28,7 @@ const Navbar = () => {
     const auth = getAuth(firebaseApp);
     auth.signOut().then(()=>{
       window.localStorage.setItem("auth", "false");
+      dispatch({type: actionType.SET_USER, user: null});
       navigate('/signin');
     }).catch((err)=>{
       
