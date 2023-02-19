@@ -38,3 +38,12 @@
 .border-parrot{
     border-color: #44924C
 }
+
+.bg-btn-enabled{
+    background: #44924C;
+    cursor:pointer
+}
+.bg-btn-disabled{
+    background: #44924cc4;
+    cursor:default
+}

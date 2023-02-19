@@ -16,8 +16,9 @@ const AdminPanel = () => {
             </div>
         </div>
 
-        
-        <div>
+
+
+        <div className='w-[85%] m-auto p-10 text-slate-200'>
             <Routes>
                 <Route path='/home' element={<DashboardHome/> } />
                 <Route path='/users' element={<DashboardUser /> } />
@@ -29,3 +30,4 @@ const AdminPanel = () => {
 }
 
 export default AdminPanel
+

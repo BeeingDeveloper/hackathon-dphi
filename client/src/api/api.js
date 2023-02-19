@@ -47,6 +47,23 @@ export const fetchUserData = async(email)=>{
 
 
 
+export const fetchAllUsers = async()=>{
+
+    try {
+        const res = await axios.get(`${baseURL}api/user/all-users`);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+
+
+
+
+//========================= HACKATHONS API =============================
 export const createNewHackathon = async(data)=>{
     try {
         const res = await axios.post(`${baseURL}api/hackathon/create`, {...data});

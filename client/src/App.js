@@ -11,6 +11,7 @@ import { actionType } from './context/reducer';
 import { getAuth } from 'firebase/auth';
 import { firebaseApp } from './config/firebase.config';
 import AdminPanel from './pages/AdminPanel';
+import ContestPage from './pages/ContestPage';
 // import StateProvider from './context/StateProvider';
 // import firebase from 'firebase/compat';
 
@@ -38,8 +39,6 @@ function App() {
         window.localStorage.setItem('auth', 'false');
         navigate('/signin');
       }
-
-      
     });
 
 
@@ -47,7 +46,6 @@ function App() {
       dispatch({type: actionType.SET_HACKTHONS, hackathons: res.data});
     })
   }, [])
-
 
 
   return (
@@ -58,9 +56,11 @@ function App() {
           <Route path='/create-challenge' element={<CreateChallenges /> } />
           <Route path='/signin' element={<SignIn setAuth={setAuth} />} />
           <Route path='/dashboard/*' element={<AdminPanel />} />
+          <Route path='/hackathon-list/:name/:description/:startDate/:endDate/:level/:imageURL' element={<ContestPage />} />
         </Routes>
     </div>
   );
 }
 
 export default App;
+// /:imageURL

@@ -83,4 +83,19 @@ const updateExistingUser = async(decodedValue, req, res)=>{
 
 
 
+
+
+
+
+// FETCH ALL USERS ----------------------------------------------------
+router.get('/all-users', async(req, res)=>{
+
+    try {
+        const users = await user.find();
+        return res.status(200).send({success: true, data: users})
+    } catch (error) {
+        return res.status(400).send({success: false, msg: "THERE IS AN ERROR AT FETCHING ALLUSERS"});
+    }
+});
+
 module.exports = router;

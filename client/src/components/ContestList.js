@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import {RiSearchLine} from 'react-icons/ri'
+import { Link } from 'react-router-dom'
 import { fetchHackathons } from '../api/api'
 import { actionType } from '../context/reducer'
 import { StateContext } from '../context/StateProvider'
@@ -45,15 +46,16 @@ const ContestList = () => {
             {
                 hackathons?.map((elm, i)=>{
                     return (
-                        <ChallengeCard 
-                            key={i}
-                            name={elm.name} 
-                            imageURL={elm.imageURL} 
-                            description={elm.description} 
-                            startDate={elm.startDate}
-                            endDate={elm.endDate}
-                            level={elm.level} 
-                            />
+                            <ChallengeCard 
+                                key={i}
+                                name={elm.name} 
+                                imageURL={elm.imageURL} 
+                                description={elm.description} 
+                                startDate={elm.startDate}
+                                endDate={elm.endDate}
+                                level={elm.level}
+                                // elm={elm}
+                                />
                     )
                 })
             }

@@ -9,6 +9,7 @@ import {
   PopoverContent,
   Portal,
   Button,
+  Text
 } from '@chakra-ui/react'
 import {motion} from 'framer-motion';
 import {getAuth} from 'firebase/auth'

@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react'
 import THUMBNAIL from '../assets/images/cardimage/Group 1000002466.png'
 import '../utils/style.css'
 import {BsCheck2Circle} from 'react-icons/bs'
+import { Link, NavLink } from 'react-router-dom'
 
-const ChallengeCard = ({name, imageURL, description, startDate, endDate, level}) => {
+const ChallengeCard = ({name, imageURL, description, startDate, endDate, level, elm}) => {
+
+    const encodedIMG = encodeURIComponent(imageURL);
+    // console.log(decodeURIComponent(encodedIMG))
 
     const [dayLeft, setDayLeft] = useState(0);
     const [hrsLeft, setHrsLeft] = useState(0);
     const [minLeft, setMinLeft] = useState(0);
-    const [secLeft, setSecLeft] = useState(0);
+    const [isDisabled, setIsDisabled] = useState(true);
 
     let status = '';
     
@@ -101,7 +105,7 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
         setDayLeft(Math.floor(remainingTime / oneDay));
         setHrsLeft(Math.floor((remainingTime % oneDay) / oneHr));
         setMinLeft(Math.floor((remainingTime % oneHr) / oneMin));
-        setSecLeft(Math.floor((remainingTime % oneMin) / 1000));
+        // setSecLeft(Math.floor((remainingTime % oneMin) / 1000));
     }
     //================================= COUNT DOWN FUNCTION ====================================
 
@@ -134,14 +138,13 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
 
 
 
-
     //================================== OPTIMISING COUNTDOWN ==================================
     const countDown =()=>{
         if(systemTime === startTime){
             setDayLeft(0);
             setHrsLeft(0);
             setMinLeft(0);
-            setSecLeft(0);
+            // setSecLeft(0);
         }else{
             
             // ========= IF YET TO START ============
@@ -176,6 +179,7 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
     useEffect(() => {
         if(status === 'Active' || status === 'Upcoming'){
                 countDownStart();
+                setIsDisabled(false)
         }
     }, []);
     
@@ -208,7 +212,7 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
                         </div>
                     )}
 
-                    <div className='flex gap-10 text-[0.7rem] w-fit m-auto'>
+                    <div className={`flex gap-10 text-[0.7rem] w-fit m-auto ${status === 'Past' ? 'hidden': 'block'}`}>
                         <p>Days</p>
                         <p>Hours</p>
                         <p>Mins</p>
@@ -216,11 +220,14 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level})
                 </p>
             </div>
 
-            <button className=' bg-green-parrot w-fit px-5 m-auto p-3 my-2 rounded-xl text-white font-[600] 
-                                flex gap-2 transition-all duration-150 ease-in hover:scale-90'>
-                <BsCheck2Circle className='text-[1.35rem]' />
-                <p>Participate Now</p>
-            </button>
+            <NavLink to={`/hackathon-list/${name}/${description}/${startDate}/${endDate}/${level}/${encodedIMG}`}>
+                <button disabled={isDisabled} 
+                        className={ `${isDisabled ? 'bg-btn-disabled' : 'bg-btn-enabled'} w-fit px-5 m-auto p-3 my-2 rounded-xl text-white font-[600] 
+                                    flex gap-2  ${isDisabled ? 'hover:scale-100' : 'transition-all duration-150 ease-in hover:scale-90'}`}>
+                    <BsCheck2Circle className='text-[1.35rem]' />
+                    <p>Participate Now</p>
+                </button>
+            </NavLink>
         </div>
     </div>
   )
