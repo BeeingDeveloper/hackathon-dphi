@@ -5,7 +5,7 @@ const baseURL = `http://localhost:5900/`;
 
 
 
-
+//============================ USERS API ===============================
 export const validateUser = async(token)=>{
     try {
         const res = await axios.get(`${baseURL}api/user/signin`,{
@@ -46,7 +46,6 @@ export const fetchUserData = async(email)=>{
 
 
 
-
 export const fetchAllUsers = async()=>{
 
     try {
@@ -56,6 +55,14 @@ export const fetchAllUsers = async()=>{
         return null;
     }
 }
+//============================ USERS API ===============================
+
+
+
+
+
+
+
 
 
 

@@ -48,8 +48,9 @@ const ContestList = () => {
                     return (
                             <ChallengeCard 
                                 key={i}
+                                id={elm._id}
                                 name={elm.name} 
-                                imageURL={elm.imageURL} 
+                                imageURL={elm.imageURL}
                                 description={elm.description} 
                                 startDate={elm.startDate}
                                 endDate={elm.endDate}

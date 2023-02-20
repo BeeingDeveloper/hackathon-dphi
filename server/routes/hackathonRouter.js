@@ -2,7 +2,7 @@ const router = require('express').Router();
 const hackathon = require('../models/hackathon.model')
 
 
-
+// MANAGE NEW USER ================================================================================
 router.post('/create', async(req, res)=>{
     const newHackathon = hackathon({
         name: req.body.name,
@@ -21,11 +21,15 @@ router.post('/create', async(req, res)=>{
         return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
 });
+// ===============================================================================================
 
 
 
 
 
+
+
+// FETCH ALL HACKATHONS ==========================================================================
 router.get('/get-hackathons', async(req, res)=>{
     const allHackathons = await hackathon.find();
 
@@ -35,11 +39,18 @@ router.get('/get-hackathons', async(req, res)=>{
         return res.status(400).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
 })
+// ===============================================================================================
 
 
 
 
 
+
+
+
+
+
+// FETCH HACKATHONS BY ID ========================================================================
 router.put('/update/:id', async(req, res)=>{
     const id = {_id: req.params.id};
 
@@ -50,11 +61,14 @@ router.put('/update/:id', async(req, res)=>{
         return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
 });
+// ===============================================================================================
 
 
 
 
 
+
+// DELETE HACKATHONS BY ID ========================================================================
 router.delete('/delete/:id', async(req, res)=>{
     const id = {_id: req.params.id};
 
@@ -64,6 +78,7 @@ router.delete('/delete/:id', async(req, res)=>{
     } catch (error) {
         return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
-})
+});
+// ===============================================================================================
 
 module.exports = router;

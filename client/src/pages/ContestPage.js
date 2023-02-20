@@ -4,16 +4,15 @@ import { useParams } from 'react-router-dom'
 
 const ContestPage = () => {
 
-    const {name, description, startDate, endDate, level, imageURL} = useParams();
+    const {name, description, startDate, endDate, level, imageURL, id} = useParams();
     
-    const decodedIMG = decodeURIComponent(imageURL);
+
 
 
     return (
-
         <div>
             {/* <h2>match.params.name</h2> */}
-            <h2>{name}</h2>
+            {/* <h2>{name}</h2>
             <h2>{description}</h2>
             <h2>{startDate}</h2>
             <h2>{endDate}</h2>
@@ -23,7 +22,7 @@ const ContestPage = () => {
                 className='h-20 w-40'
                 src={reverseImage}
                 alt='img'
-            /> */}
+            /> */} 
         </div>
   )
 }

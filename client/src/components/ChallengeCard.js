@@ -4,10 +4,8 @@ import '../utils/style.css'
 import {BsCheck2Circle} from 'react-icons/bs'
 import { Link, NavLink } from 'react-router-dom'
 
-const ChallengeCard = ({name, imageURL, description, startDate, endDate, level, elm}) => {
+const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, level, elm}) => {
 
-    const encodedIMG = encodeURIComponent(imageURL);
-    // console.log(decodeURIComponent(encodedIMG))
 
     const [dayLeft, setDayLeft] = useState(0);
     const [hrsLeft, setHrsLeft] = useState(0);
@@ -220,7 +218,7 @@ const ChallengeCard = ({name, imageURL, description, startDate, endDate, level, 
                 </p>
             </div>
 
-            <NavLink to={`/hackathon-list/${name}/${description}/${startDate}/${endDate}/${level}/${encodedIMG}`}>
+            <NavLink to={`/hackathon-list/${name}/${description}/${startDate}/${endDate}/${level}/${id}`}>
                 <button disabled={isDisabled} 
                         className={ `${isDisabled ? 'bg-btn-disabled' : 'bg-btn-enabled'} w-fit px-5 m-auto p-3 my-2 rounded-xl text-white font-[600] 
                                     flex gap-2  ${isDisabled ? 'hover:scale-100' : 'transition-all duration-150 ease-in hover:scale-90'}`}>
