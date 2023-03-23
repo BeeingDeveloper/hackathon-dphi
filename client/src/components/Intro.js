@@ -9,11 +9,11 @@ import { Link } from 'react-router-dom';
 const Intro = () => {
   return (
     // <div className=' h-auto w-screen'>
-        <div className=' h-auto w-screen'>
+        <div className=' h-auto w-screen '>
             <div className='flex h-[80%] w-[80%] flex-col lg:flex-row gap-10 m-auto my-5 lg:my-20 pb-6'>
                 <div className='w-full lg:w-[65%] h-auto '>
                     <div className='flex mt-28 gap-2 lg:gap-5 w-full lg:w-[35rem] bg-regd-600'>
-                        <div className='h-16 lg:h-28 w-6 bg-red-500'></div>
+                        <div className='h-16 lg:h-28 w-6 bg-yellow-600'></div>
                         <div className='flex flex-col gap-5 lg:gap-10'>
                             <h2 className='text-[1.4rem] lg:text-[2.5rem] font-semibold'>Accelerate Innovation with Global AI Challenges</h2>
                             <h4 className='text-sm text-slate-300'>AI Challenges at DPhi simulate real-world problems. It is a great place to put your AI/Data Science skills to test on diverse datasets allowing you to foster learning through competitions.</h4>
@@ -24,7 +24,7 @@ const Intro = () => {
                     </div>
                 </div>
                 <div className='w-full lg:w-[35%] h-auto'>
-                    <img src={ROCKET} alt='rocket' className='lg:h-[30rem] mt-5 lg:mt-20' />
+                    <img src={ROCKET} alt='rocket' className='lg:h-[25rem] mt-5 lg:mt-20' />
                 </div>
             </div>
             <div className='flex w-[100vw] h-auto background-dark justify-center items-center'>

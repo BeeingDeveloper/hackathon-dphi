@@ -45,7 +45,7 @@ const Navbar = () => {
         <div className=' h-16 fixed bg-white w-screen flex justify-between '>
           <div className='w-[80%] m-auto flex justify-between'>
               <Link to='/'>
-                  <img src={LOGO} alt='logo' className='pt-2 transition-all ease-in duration-200 hover:scale-[0.90]' /> 
+                  <img src={LOGO} alt='logo' className='pt-2 h-10 md:h-14 transition-all ease-in duration-200 hover:scale-[0.90]' /> 
               </Link>
 
               <div>
@@ -61,8 +61,8 @@ const Navbar = () => {
                           {
                             userName ? (
                               <div className='flex justify-center items-center bg-green-parrot rounded-full px-2 transition-all ease-out duration-150 hover:scale-90 h-fit my-3 text-lg font-semibold p-1 gap-1'>
-                                <img src={profilePic ? profilePic : null} className='w-8 h-8 rounded-full' />
-                                <h2>{userName.split(" ")[0]}</h2>
+                                <img src={profilePic ? profilePic : null} className='w-4 h-4 md:h-8 md:w-8 rounded-full' />
+                                <h2 className='text-sm md:text-lg'>{userName.split(" ")[0]}</h2>
                               </div>
                             ) : (
                               <Link to='/signin'>

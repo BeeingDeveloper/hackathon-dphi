@@ -81,4 +81,61 @@ router.delete('/delete/:id', async(req, res)=>{
 });
 // ===============================================================================================
 
+
+
+
+
+
+
+
+
+
+// ==================================== FITLERING HACKATHONS =====================================
+        // --------------- BY PASSED CONTEST
+        router.get('/filter/passed', async(req, res)=>{
+            const nowDate = new Date();
+        
+            try {
+                const passedHackathons = await hackathon.find({ startDate: { $lt: nowDate } });
+                return res.status(201).send({success: true, data: passedHackathons});
+            } catch (error) {
+                return res.status(401).send({success: false, msg: "FAILED TO FILTER ITEMS"});
+            }
+        });
+
+
+
+
+
+        // --------------- BY UPCOMING CONTEST
+        router.get('/filter/upcoming', async(req, res)=>{
+            const nowDate = new Date();
+        
+            try {
+                const upcomingHackathons = await hackathon.find({ startDate: { $gt: nowDate } });
+                return res.status(201).send({success: true, data: upcomingHackathons});
+            } catch (error) {
+                return res.status(401).send({success: false, msg: "FAILED TO FILTER ITEMS"});
+            }
+        });
+
+
+
+
+
+        // --------------- BY ACTIVE CONTEST
+        router.get('/filter/active', async(req, res)=>{
+            const nowDate = new Date();
+
+            try {
+                const activeHackathons = await hackathon.find({$and: [{ startDate: { $lt: nowDate } },{ endDate: { $gt: nowDate } }]});
+                return res.status(200).send({success: true, data: activeHackathons});
+            } catch (error) {
+                return res.status(400).send({success: false, msg: "FAILED TO FITLER ITEMS"});
+            }
+        })
+
+
+
+
 module.exports = router;

@@ -130,6 +130,9 @@ const CreateChallenges = () => {
     
     const userID = user?.user_id;
 
+    const [isError, SEtIsError] = useState(false);
+
+
     //CONVERT TIME TO MONGODB------------------------------------------------------------------
     const convertDefaultDate = (systemDate)=>{
         const localDate = systemDate.toLocaleDateString();
@@ -186,7 +189,7 @@ const CreateChallenges = () => {
 
     //HANDLE START DATE------------------------------------------------------
     const handleStartDate = (e) => {
-        setStartDate(convertTimeToMongoDB(e.target.value)); 
+        setStartDate(convertTimeToMongoDB(e.target.value));
     };
     //-----------------------------------------------------------------------
 
@@ -294,6 +297,7 @@ const CreateChallenges = () => {
                       type="datetime-local"
                       defaultValue={new Date()}
                       placeholder=''
+                      min={new Date()}
                     //   value={endDate}
                       onChange={handleEndDate}
                       className='w-[1.2rem] h-[2rem] bg-slate-300 rounded-md m-1 outline-none cursor-pointer'
