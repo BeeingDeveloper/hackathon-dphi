@@ -48,6 +48,26 @@ router.get('/get-hackathons', async(req, res)=>{
 
 
 
+// FETCH SINGLE HACKATHONS ==========================================================================
+router.get('/get-hackathon/:id', async(req, res)=>{
+    const id = {_id: req.params.id};
+
+    try {
+        const hackthonItem = await hackathon.findById(id);
+        return res.status(200).send({success: true, data: hackthonItem})
+    } catch (error) {
+        return res.status(400).send({success: false, msg: "INTERNAL SERVER ERROR"});
+    }
+})
+// ===============================================================================================
+
+
+
+
+
+
+
+
 
 
 // FETCH HACKATHONS BY ID ========================================================================
@@ -96,7 +116,7 @@ router.delete('/delete/:id', async(req, res)=>{
             const nowDate = new Date();
         
             try {
-                const passedHackathons = await hackathon.find({ startDate: { $lt: nowDate } });
+                const passedHackathons = await hackathon.find({ endDate: { $lt: nowDate } });
                 return res.status(201).send({success: true, data: passedHackathons});
             } catch (error) {
                 return res.status(401).send({success: false, msg: "FAILED TO FILTER ITEMS"});
@@ -125,10 +145,10 @@ router.delete('/delete/:id', async(req, res)=>{
 
         // --------------- BY ACTIVE CONTEST
         router.get('/filter/active', async(req, res)=>{
-            const nowDate = new Date();
+            const currentDate = new Date();
+            const activeHackathons = await hackathon.find({$and: [{ startDate: { $lt: currentDate } },{ endDate: { $gt: currentDate } }]});
 
             try {
-                const activeHackathons = await hackathon.find({$and: [{ startDate: { $lt: nowDate } },{ endDate: { $gt: nowDate } }]});
                 return res.status(200).send({success: true, data: activeHackathons});
             } catch (error) {
                 return res.status(400).send({success: false, msg: "FAILED TO FITLER ITEMS"});

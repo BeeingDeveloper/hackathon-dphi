@@ -179,7 +179,7 @@ const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, lev
                 countDownStart();
                 setIsDisabled(false)
         }
-    }, []);
+    }, [startDate]);
     
 
   return (
@@ -218,7 +218,7 @@ const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, lev
                 </p>
             </div>
 
-            <NavLink to={`/hackathon-list/${name}/${description}/${startDate}/${endDate}/${level}/${id}`}>
+            <NavLink to={`/hackathon-list/${id}`}>
                 <button disabled={isDisabled} 
                         className={ `${isDisabled ? 'bg-btn-disabled' : 'bg-btn-enabled'} w-fit px-5 m-auto p-3 my-2 rounded-xl text-white font-[600] 
                                     flex gap-2  ${isDisabled ? 'hover:scale-100' : 'transition-all duration-150 ease-in hover:scale-90'}`}>

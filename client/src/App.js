@@ -56,7 +56,7 @@ function App() {
           <Route path='/create-challenge' element={<CreateChallenges /> } />
           <Route path='/signin' element={<SignIn setAuth={setAuth} />} />
           <Route path='/dashboard/*' element={<AdminPanel />} />
-          <Route path='/hackathon-list/:name/:description/:startDate/:endDate/:level/:imageURL' element={<ContestPage />} />
+          <Route path='/hackathon-list/:id' element={<ContestPage />} />
         </Routes>
     </div>
   );

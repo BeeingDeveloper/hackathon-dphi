@@ -83,7 +83,7 @@ export const createNewHackathon = async(data)=>{
 
 
 
-
+//FETCH ALL HACKATHONS
 export const fetchHackathons = async()=>{
     try {
         const res = await axios.get(`${baseURL}api/hackathon/get-hackathons`);
@@ -94,3 +94,49 @@ export const fetchHackathons = async()=>{
 }
 
 
+
+
+//FETCH SINGLE HACKATHON
+export const fetchHackathonByID = async(id)=>{
+    try {
+        const res = await axios.get(`${baseURL}api/hackathon/get-hackathon/${id}`)
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+// FILTER BY UPCOMING CONTEST
+export const filterByUpcoming = async()=>{
+    try {
+        const res = await axios.get(`${baseURL}api/hackathon/filter/upcoming`);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+// FITLER BY ACTIVE CONTEST
+export const filterByActive = async()=>{
+    try {
+        const res = await axios.get(`${baseURL}api/hackathon/filter/active`);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+// FILTER BY PASSED CONTEST
+export const filterByPassed = async()=>{
+    try {
+        const res = await axios.get(`${baseURL}api/hackathon/filter/passed`);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
