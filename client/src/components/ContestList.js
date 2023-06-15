@@ -18,12 +18,52 @@ const ContestList = () => {
     const {hackathons} = state;
     const [contestList, setContestList] = useState(null);
 
+        //  FETCH ALL HACATHONS
+        const fetchAllHackathons=()=>{
+            fetchHackathons().then((res)=>{
+                setContestList(res.data)
+            }).catch(err=> console.log(err));
+        }
+    
+    
+    
+    
+        // FILTER ITEMS BY ACTIVE STATUS
+        const filterByActiveFun =()=>{
+            hackathons.map(elm=>console.log( new Date(elm.startDate), elm.startDate))
+            setContestList(hackathons?.filter((elm)=>{
+                return new Date(elm.startDate) > new Date();
+            }))
+        }
+    
+    
+
+
     // HANDLING SELECT============================================================================
-    const [selected, setSelected] = React.useState('');
+    const [selected, setSelected] = useState('');
+    const [searchValue, setSearchValue] = useState('');
+
+
+    const searchItems = ()=>{
+        setContestList(contestList.filter((elm) => {
+            let getName = elm.name.toLowerCase().includes(searchValue);
+            return getName;
+        }))
+    }
+
+
+    const handleSearchItem = (e)=>{
+        setSearchValue(e.target.value);
+        searchItems();
+        if(searchValue.length <= 1){
+            fetchAllHackathons()
+        }
+    }
+
+
 
     const handleChange = (event) => {
         setSelected(event.target.value);
-
 
         if(selected === 'active'){
             filterByActive().then((res)=>{
@@ -36,40 +76,27 @@ const ContestList = () => {
 
 
 
-    //  FETCH ALL HACATHONS
-    const fetchAllHackathons=()=>{
-        fetchHackathons().then((res)=>{
-            setContestList(res.data)
-        }).catch(err=> console.log(err));
-    }
-
-
-
-
-    // FILTER ITEMS BY ACTIVE STATUS
-    const filterByActiveFun =()=>{
-        hackathons.map(elm=>console.log( new Date(elm.startDate), elm.startDate))
-        setContestList(hackathons?.filter((elm)=>{
-            return new Date(elm.startDate) > new Date();
-        }))
-    }
-
 
 
     useEffect(() => {
         fetchAllHackathons();
     }, []);
     
+
     
   return (
-    <div className='h-auto lg:h-screen w-screen pb-44'>
+    <div className='h-auto lg:h-screen w-screen pb-44 m-auto'>
         <div className='w-full background-dark'>
             <div className='w-[95%] lg:w-[80%] m-auto py-20 flex flex-col'>
                 <h2 className='w-fit m-auto text-2xl font-semibold my-10'>Explore Challenges</h2>
                 <div className=' w-full lg:w-[75%] m-auto flex gap-5  justify-between text-black pb-10'>
                     <div className='flex bg-white rounded-md w-full py-2 h-10'>
                         <RiSearchLine className='my-auto text-2xl ml-5' />
-                        <input className='bg-white rounded-md w-full outline-none ml-2' />
+                        <input 
+                            className='bg-white rounded-md w-full outline-none ml-2'
+                            value={searchValue}
+                            onChange={handleSearchItem}
+                         />
                     </div>
                     <div className='flex flex-col w-40'>
                         <FormControl sx={{ minWidth: 170, background: 'white', borderRadius: '0.25rem', }} size="small">

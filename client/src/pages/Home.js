@@ -8,7 +8,7 @@ import '../utils/style.css'
 const Home = () => {
   return (
     <div className='h-screen-minus-nav w-screen'>
-      <div className='h-full w-full m-auto text-white overflow-scroll'>
+      <div className='h-full w-fit m-auto text-white overflow-scroll'>
         <Intro />
         <Challenges />
         <ContestList />
