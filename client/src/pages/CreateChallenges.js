@@ -11,6 +11,11 @@ import { createNewHackathon, fetchHackathons } from '../api/api'
 import { StateContext } from '../context/StateProvider'
 import { actionType } from '../context/reducer'
 
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 
 const UploadingUI = ({imageUploadingProgress})=>{
@@ -130,23 +135,23 @@ const CreateChallenges = () => {
     
     const userID = user?.user_id;
 
-    const [isError, SEtIsError] = useState(false);
+
 
 
     //CONVERT TIME TO MONGODB------------------------------------------------------------------
-    const convertDefaultDate = (systemDate)=>{
-        const localDate = systemDate.toLocaleDateString();
-        const localTime = systemDate.toTimeString();
-        let getDay = localDate.split('/')[1];
-        let getMonth =  localDate.split('/')[0];
-        let getYear = systemDate.getFullYear();
+    // const convertDefaultDate = (systemDate)=>{
+    //     const localDate = systemDate.toLocaleDateString();
+    //     const localTime = systemDate.toTimeString();
+    //     let getDay = localDate.split('/')[1];
+    //     let getMonth =  localDate.split('/')[0];
+    //     let getYear = systemDate.getFullYear();
 
-        getDay = getDay < 10 ? `0${getDay}` : getDay;
-        getMonth = getMonth < 10 ? `0${getMonth}` : getMonth;
+    //     getDay = getDay < 10 ? `0${getDay}` : getDay;
+    //     getMonth = getMonth < 10 ? `0${getMonth}` : getMonth;
 
-        const finalTime = `${getYear}-${getMonth}-${getDay}T${localTime.slice(0,8)}.000+00:00`
-        return finalTime;
-    }
+    //     const finalTime = `${getYear}-${getMonth}-${getDay}T${localTime.slice(0,8)}.000+00:00`
+    //     return finalTime;
+    // }
     //-----------------------------------------------------------------------------------------
 
 
@@ -160,8 +165,8 @@ const CreateChallenges = () => {
     const [imageUploadingProgress, setImageUploadingProgress] = useState(0);
 
     const [challengeName, setChallengeName] = useState('');
-    const [startDate, setStartDate] = useState(convertDefaultDate(new Date));
-    const [endDate, setEndDate] = useState(convertDefaultDate(new Date));
+    const [startDate, setStartDate] = useState(dayjs(new Date()));
+    const [endDate, setEndDate] = useState(dayjs(new Date()));
     const [description, setDescription] = useState('');
     const [imageURL, setImageURL] = useState(null);
     const [level, setLevel] = useState('Level 1');
@@ -174,32 +179,32 @@ const CreateChallenges = () => {
 
 
 
-    //CONVERT TIME TO MONGODB------------------------------------------------
-    const convertTimeToMongoDB =(localTime)=>{
-        const getDate = localTime;
-        const year = getDate.slice(0,10);
-        const time = getDate.slice(11, 16);
-        const newTime = `${year}T${time}:00.000+00:00`
-        return newTime;
-    }
-    //-----------------------------------------------------------------------
+    // //CONVERT TIME TO MONGODB------------------------------------------------
+    // const convertTimeToMongoDB =(localTime)=>{
+    //     const getDate = localTime;
+    //     const year = getDate.slice(0,10);
+    //     const time = getDate.slice(11, 16);
+    //     const newTime = `${year}T${time}:00.000+00:00`
+    //     return newTime;
+    // }
+    // //-----------------------------------------------------------------------
 
 
 
 
-    //HANDLE START DATE------------------------------------------------------
-    const handleStartDate = (e) => {
-        setStartDate(convertTimeToMongoDB(e.target.value));
-    };
-    //-----------------------------------------------------------------------
+    // //HANDLE START DATE------------------------------------------------------
+    // const handleStartDate = (e) => {
+    //     setStartDate(convertTimeToMongoDB(e.target.value));
+    // };
+    // //-----------------------------------------------------------------------
 
 
 
-    //END DATE---------------------------------------------------------------
-    const handleEndDate = (e) => {
-        setEndDate(convertTimeToMongoDB(e.target.value));
-    };
-    //-----------------------------------------------------------------------
+    // //END DATE---------------------------------------------------------------
+    // const handleEndDate = (e) => {
+    //     setEndDate(convertTimeToMongoDB(e.target.value));
+    // };
+    // //-----------------------------------------------------------------------
 
 
 
@@ -222,8 +227,8 @@ const CreateChallenges = () => {
         });
 
         setChallengeName('');
-        setStartDate(new Date());
-        setEndDate(new Date());
+        setStartDate(null);
+        setEndDate(null);
         setDescription('');
         setImageURL(null);
         setLevel('Level 1');
@@ -242,7 +247,7 @@ const CreateChallenges = () => {
             <div className='flex flex-col gap-5 lg:w-[40%]'>
                 <h2 className='text-lg font-semibold'>Challenge Name</h2>
                 <input 
-                    placeholder='enter challenge name...' 
+                    placeholder='Enter challenge name...' 
                     className=' p-2 border border-slate-400 outline-none rounded-md'
                     value={challengeName}
                     onChange={(e)=>setChallengeName(e.target.value)}
@@ -257,55 +262,30 @@ const CreateChallenges = () => {
 
             <div className='flex flex-col gap-5 lg:w-[40%] '>
                 <h2 className='text-lg font-semibold'>Start Date</h2>
-                <div className='flex justify-between border-2 border-slate-400 rounded-md p-1'>
-                    <input 
-                        value={startDate}
-                        placeholder='enter date'
-                        className='outline-none w-[90%]'
-                        disabled={true}
-                    />
-                    
-                    <input
-                      id="datetime-local"
-                      type="datetime-local"
-                      defaultValue={new Date()}
-                      placeholder=''
-                    //   value={startDate}
-                      onChange={handleStartDate}
-                      className='w-[1.2rem] h-[2rem] bg-slate-300 rounded-md m-1 outline-none cursor-pointer'
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                    />
-                </div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+
+                        <DateTimePicker
+                            value={startDate}
+                            onChange={(newDate) => setStartDate(new Date(newDate).toLocaleString())}
+                        />
+                    </DemoContainer>
+                </LocalizationProvider>
             </div>
 
 
 
             <div className='flex flex-col gap-5 lg:w-[40%] '>
                 <h2 className='text-lg font-semibold'>End Date</h2>
-                <div className='flex justify-between border-2 border-slate-400 rounded-md p-1'>
-                    <input 
-                        value={endDate}
-                        placeholder='enter date'
-                        className='outline-none w-[90%]'
-                        disabled={true}
-                    />
-                    
-                    <input
-                      id="datetime-local"
-                      type="datetime-local"
-                      defaultValue={new Date()}
-                      placeholder=''
-                      min={new Date()}
-                    //   value={endDate}
-                      onChange={handleEndDate}
-                      className='w-[1.2rem] h-[2rem] bg-slate-300 rounded-md m-1 outline-none cursor-pointer'
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                    />
-                </div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+
+                        <DateTimePicker
+                            value={endDate}
+                            onChange={(newDate) => setEndDate(new Date(newDate).toLocaleString())}
+                        />
+                    </DemoContainer>
+                </LocalizationProvider>
             </div>
 
 
@@ -321,7 +301,7 @@ const CreateChallenges = () => {
                     value={description}
                     onChange={(e)=>setDescription(e.target.value)}
                     type='text' 
-                    placeholder='enter description...' 
+                    placeholder='Enter description...' 
                     className='border border-slate-400 rounded-md p-2 w-[150%] outline-none' />
             </div>
 
