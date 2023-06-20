@@ -19,6 +19,11 @@ const ContestPage = () => {
         }).catch(err=>console.log(err))
     }
 
+    const [tab, setTab]= useState(1);
+
+    console.log(tab)
+
+
 
     useEffect(()=>{
         fetchHackathonItem(id);
@@ -39,9 +44,15 @@ const ContestPage = () => {
 
             <div className='h-16 w-screen bg-white shadow-xl shadow-slate-400'> 
                 <div className='w-[75%] m-auto flex justify-between'>
-                    <div className='flex flex-col w-32 relative top-6'>
-                        <h2 className='font-semibold text-2xl w-fit m-auto'>Overview</h2>
-                        <div className='w-full h-[7px] bg-green-parrot'></div>
+                    <div className='flex w-fit gap-5 relative top-5'>
+                        <div className='flex flex-col' onClick={()=>setTab(1)} >
+                            <h2 className='font-semibold text-2xl w-fit m-auto'>Overview</h2>
+                            <div className={` transition-all duration-150 top-10 h-[7px] bg-green-parrot absolute ${tab == 1 ? 'left-0 w-32' : 'left-[8rem] w-[12rem]'}`}></div>
+                        </div>
+                        <h2
+                            onClick={()=>setTab(2)} 
+                            className='font-semibold text-2xl w-fit m-auto '>Participant List</h2>
+
                     </div>
 
                     <div className='flex gap-5'>
@@ -51,11 +62,21 @@ const ContestPage = () => {
                 </div>
             </div>
 
-            <div className='w-[75%] m-auto mt-10'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            {
+                tab == 1 ? (
+                    <div className='w-[75%] m-auto mt-10'>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        
+        
+                    </div>
+                ) : (
+                    <div className='w-[75%] m-auto mt-10'>
+                        
+                    </div>
+                )
+            }
 
 
-            </div>
         </div>
   )
 }

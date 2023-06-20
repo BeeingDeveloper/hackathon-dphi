@@ -29,11 +29,16 @@ const ContestList = () => {
     
     
         // FILTER ITEMS BY ACTIVE STATUS
-        const filterByActiveFun =()=>{
-            hackathons.map(elm=>console.log( new Date(elm.startDate), elm.startDate))
-            setContestList(hackathons?.filter((elm)=>{
-                return new Date(elm.startDate) > new Date();
-            }))
+        // const filterByActiveFun =()=>{
+        //     hackathons.map(elm=>console.log( new Date(elm.startDate), elm.startDate))
+        //     setContestList(hackathons?.filter((elm)=>{
+        //         return new Date(elm.startDate) > new Date();
+        //     }))
+        // }
+        const filterByActiveFun = ()=>{
+            filterByActive().then((res)=>{
+                setContestList(res.data)
+            }).catch(err=>console.log(err))
         }
     
     
@@ -110,7 +115,7 @@ const ContestList = () => {
                             <h5 className='font-semibold ml-1'>Status</h5>
                             <hr />
                                 <MenuItem value={'all'}>All</MenuItem>
-                                <MenuItem value={'active'}>Active</MenuItem>
+                                <MenuItem value={'active'} onClick={filterByActiveFun}>Active</MenuItem>
                                 <MenuItem value={'upcoming'}>Upcoming</MenuItem>
                                 <MenuItem value={'past'}>Past</MenuItem>
                             <h5 className='font-semibold ml-1'>Level</h5>
