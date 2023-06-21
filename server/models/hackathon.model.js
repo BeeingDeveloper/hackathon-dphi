@@ -9,7 +9,13 @@ const hackathonModel = Schema({
     description: {type: String, required: true},
     startDate: {type: Date, required: true},
     endDate: {type: Date, required: true},
-    level: {type: String, required: true},  
+    level: {type: String, required: true},
+    participants: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
 },
 {timestamps: true}
 );

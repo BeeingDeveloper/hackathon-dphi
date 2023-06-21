@@ -95,12 +95,26 @@ export const fetchHackathons = async()=>{
 
 
 
+//  UPDATED PARTICIAPANTS
+export const participateContest = async(contestID, userID)=>{
+    try {
+        const res = await axios.post(`${baseURL}api/hackathon/get-contest/${contestID}/${userID}`);
+        return res;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+
+
 
 //FETCH SINGLE HACKATHON
 export const fetchHackathonByID = async(id)=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/get-hackathon/${id}`)
-        return res.data;
+        const res = await axios.get(`${baseURL}api/hackathon/fetch-participants/${id}`)
+        return res;
     } catch (error) {
         return null;
     }

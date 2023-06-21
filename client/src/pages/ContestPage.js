@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { fetchHackathonByID } from '../api/api';
+import { fetchHackathonByID, participateContest } from '../api/api';
 import '../utils/style.css'
 import {BsBarChartFill} from 'react-icons/bs';
+import UserItem from '../components/UserItem';
+import { StateContext } from '../context/StateProvider';
 
 
 
@@ -11,18 +13,27 @@ const ContestPage = () => {
     const {id} = useParams();
     
     const [hackathonItem, setHackathonItem] = useState(null);
+    const [participants, setParticipants] = useState(null);
+
+
+    const {state} = useContext(StateContext);
+    const userID = state?.user?._id;
 
 
     const fetchHackathonItem = (id)=>{
         fetchHackathonByID(id).then((res)=>{
+            setParticipants(res.data.participants);
             setHackathonItem(res.data);
         }).catch(err=>console.log(err))
     }
 
     const [tab, setTab]= useState(1);
 
-    console.log(tab)
-
+    const participate = (contestID, userID)=>{
+        participateContest(contestID, userID).then((res)=>{
+            setParticipants(res.data.data.participants);
+        }).catch(err=>console.log(err));
+    }
 
 
     useEffect(()=>{
@@ -40,6 +51,10 @@ const ContestPage = () => {
                     <BsBarChartFill className='my-1' />
                     <h2>Easy</h2>
                 </div>
+
+                <button className=' text-left' onClick={()=>participate(id, userID)}>
+                    PARTICIPATE
+                </button>
             </div>
 
             <div className='h-16 w-screen bg-white shadow-xl shadow-slate-400'> 
@@ -71,6 +86,21 @@ const ContestPage = () => {
                     </div>
                 ) : (
                     <div className='w-[75%] m-auto mt-10'>
+                        <div className='flex w-full justify-between bg-slate-500 p-1 rounded-t-md'>
+                            <h1>Name</h1>
+                            <h1>Email</h1>
+                            <h1>Date of Join</h1>
+                            <h1>Action</h1>
+                        </div>
+                        {
+                            participants?.map((elm, i)=>{
+                                return (
+                                    <UserItem key={i} name={elm.name} email={elm.email} date={'daga'} /> 
+                                
+                                )
+                            })
+                        }
+
                         
                     </div>
                 )

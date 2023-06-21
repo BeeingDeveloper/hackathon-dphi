@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const hackathon = require('../models/hackathon.model')
-
+const User = require('../models/user.model');
 
 // MANAGE NEW USER ================================================================================
 router.post('/create', async(req, res)=>{
@@ -99,12 +99,55 @@ router.delete('/delete/:id', async(req, res)=>{
         return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
 });
+
+
+
+
+
+// ADD USER TO THE PARICIPANTS LIST================================================================
+router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
+    const { contest_id, user_id } = req.params;
+
+    try {
+      const contest = await hackathon.findById(contest_id);
+      const user = await User.findById(user_id);
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      console.log(user)
+      // Push the user object to the participants array
+      contest.participants.push(user);
+  
+      // Save the updated contest
+      const savedContest = await contest.save();
+      await savedContest.populate('participants');
+      return res.status(200).json({ success: true, data: savedContest });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: 'INTERNAL SERVER ERROR' });
+    }
+})
+
 // ===============================================================================================
 
 
 
 
 
+
+
+
+// FETCH PARTICIPANTS LIST=======================================================================
+router.get('/fetch-participants/:contestID', async(req, res)=>{
+    const contestID = req.params.contestID;
+    try {
+        const participantsList = await hackathon.findById(contestID).populate('participants');
+        return res.status(200).send(participantsList)
+    } catch (error) {
+        return res.status(400).send(error)
+    }
+})
 
 
 
