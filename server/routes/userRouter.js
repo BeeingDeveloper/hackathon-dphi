@@ -98,4 +98,20 @@ router.get('/all-users', async(req, res)=>{
     }
 });
 
+
+
+
+
+
+//  FETCH SINGLE USER--------------------------------------------------
+router.get('/fetch-user/:id', async(req, res)=>{
+    const {id} = req.params;
+    try {
+        const foundUser = await user.findById(id);
+        return res.status(200).send({success: true, data: foundUser});
+    } catch (error) {
+        return res.status(501).send({succcess: false, msg: "INTERNAL SERVER ERROR"});
+    }
+})
+
 module.exports = router;

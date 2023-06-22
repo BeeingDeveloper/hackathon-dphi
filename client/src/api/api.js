@@ -55,7 +55,34 @@ export const fetchAllUsers = async()=>{
         return null;
     }
 }
+
+
+
+
+export const fetchUserByID = async(id)=>{
+    try {
+        const res = await axios.get(`${baseURL}api/user/fetch-user/${id}`);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
 //============================ USERS API ===============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

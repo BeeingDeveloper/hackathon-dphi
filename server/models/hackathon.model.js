@@ -21,9 +21,11 @@ const hackathonModel = Schema({
             dateJoined: {type: String}
         }
     ]
-    
 },
 {timestamps: true}
 );
+
+const Hackathon = mongoose.model('Hackathon', hackathonModel);
+module.exports = Hackathon;
 
 module.exports = mongoose.model('hackathon', hackathonModel);

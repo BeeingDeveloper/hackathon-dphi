@@ -54,7 +54,7 @@ const ContestPage = () => {
                     <h2>Easy</h2>
                 </div>
 
-                <button className=' text-left' onClick={()=>participate(id, userID)}>
+                <button className=' text-left bg-green-parrot w-fit p-2 rounded-md text-slate-200 px-4 font-semibold transition-all duration-90 hover:scale-90' onClick={()=>participate(id, userID)}>
                     PARTICIPATE
                 </button>
             </div>
@@ -87,16 +87,16 @@ const ContestPage = () => {
         
                     </div>
                 ) : (
-                    <div className='w-[75%] m-auto mt-10'>
+                    <div className='w-[75%] m-auto mt-10 shadow-lg shadow-slate-400'>
                         <div className='flex w-full justify-between bg-green-parrot p-2 text-xl font-semibold text-slate-100 rounded-t-md text-center'>
                             <h1 className='w-[33.3%]'>Name</h1>
                             <h1 className='w-[33.3%]'>Email</h1>
                             <h1 className='w-[33.3%]'>Date of Join</h1>
                         </div>
                         {
-                            participants?.map((elm, i)=>{
+                            participants?.map((elm)=>{
                                 return (
-                                    <UserItem key={elm.id} name={elm.user.name} email={elm.user.email} date={elm.dateJoined} profilePic={elm.user.imageURL} /> 
+                                    <UserItem key={elm.id} userID={elm.user._id} name={elm.user.name} email={elm.user.email} date={elm.dateJoined} profilePic={elm.user.imageURL} /> 
                                 )
                             })
                         }

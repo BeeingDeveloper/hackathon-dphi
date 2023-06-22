@@ -9,7 +9,16 @@ const userSchema = new Schema({
     user_id: {type: String, required: true, unique: true},
     email_verified: {type: String, required: true},
     role: {type: String, required: true},
-    auth_time: {type: String, required: true},    
+    auth_time: {type: String, required: true}, 
+    joinedContest : [
+        {
+            contest: {
+                type: Schema.Types.ObjectId,
+                ref: 'Hackathon'
+            },
+            dateJoined: {type: String}
+        }
+    ]   
 },{
     timestamps: true
 });

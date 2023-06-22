@@ -62,7 +62,7 @@ const Navbar = () => {
                             userName ? (
                               <div className='flex justify-center items-center bg-green-parrot rounded-full px-2 transition-all ease-out duration-150 hover:scale-90 h-fit my-3 text-lg font-semibold p-1 gap-1'>
                                 <img src={profilePic ? profilePic : null} className='w-4 h-4 md:h-8 md:w-8 rounded-full' />
-                                <h2 className='text-sm md:text-lg'>{userName.split(" ")[0]}</h2>
+                                <h2 className='text-sm md:text-lg text-slate-200 font-semibold pr-1'>{userName.split(" ")[0]}</h2>
                               </div>
                             ) : (
                               <Link to='/signin'>

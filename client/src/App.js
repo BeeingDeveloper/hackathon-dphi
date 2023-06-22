@@ -12,6 +12,7 @@ import { getAuth } from 'firebase/auth';
 import { firebaseApp } from './config/firebase.config';
 import AdminPanel from './pages/AdminPanel';
 import ContestPage from './pages/ContestPage';
+import UserProfile from './pages/UserProfile';
 // import StateProvider from './context/StateProvider';
 // import firebase from 'firebase/compat';
 
@@ -57,6 +58,7 @@ function App() {
           <Route path='/signin' element={<SignIn setAuth={setAuth} />} />
           <Route path='/dashboard/*' element={<AdminPanel />} />
           <Route path='/hackathon-list/:id' element={<ContestPage />} />
+          <Route path='/user-profile/:id' element={<UserProfile />} />
         </Routes>
     </div>
   );
