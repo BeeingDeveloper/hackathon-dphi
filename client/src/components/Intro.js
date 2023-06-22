@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {motion} from 'framer-motion';
 import ROCKET from '../assets/images/icons/PicsArt_04-14-04.42 1.svg'
 import { introFeaures } from '../data/introFeaures';
 import { Link } from 'react-router-dom';
+import { StateContext } from '../context/StateProvider';
 
 
 
 const Intro = () => {
+
+
+    const {state:{user} } = useContext(StateContext);
+    
+
+
   return (
     // <div className=' h-auto w-screen'>
         <div className=' h-auto w-screen '>
@@ -17,7 +24,7 @@ const Intro = () => {
                         <div className='flex flex-col gap-5 lg:gap-10'>
                             <h2 className='text-[1.4rem] lg:text-[2.5rem] font-semibold'>Accelerate Innovation with Global AI Challenges</h2>
                             <h4 className='text-sm text-slate-300'>AI Challenges at DPhi simulate real-world problems. It is a great place to put your AI/Data Science skills to test on diverse datasets allowing you to foster learning through competitions.</h4>
-                            <Link to='/create-challenge'>
+                            <Link to={`${!user ? 'signin' : '/create-challenge'}`}>
                                 <motion.button whileHover={{scale: 0.95}} className='w-fit bg-white text-slate-900 font-semibold rounded-md p-2'>Create Challenge</motion.button>
                             </Link>
                         </div>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { fetchHackathonByID, participateContest } from '../api/api';
 import '../utils/style.css'
 import {BsBarChartFill} from 'react-icons/bs';
@@ -9,17 +9,21 @@ import { StateContext } from '../context/StateProvider';
 
 
 const ContestPage = () => {
+    const navigate = useNavigate();
 
     const {id} = useParams();
     
     const [hackathonItem, setHackathonItem] = useState(null);
     const [participants, setParticipants] = useState(null);
+    const [tab, setTab]= useState(1);
 
 
     const {state} = useContext(StateContext);
     const userID = state?.user?._id;
 
 
+
+    // FETCH ALL HACKATHONS
     const fetchHackathonItem = (id)=>{
         fetchHackathonByID(id).then((res)=>{
             setParticipants(res.data.participants);
@@ -27,17 +31,21 @@ const ContestPage = () => {
         }).catch(err=>console.log(err))
     }
 
-    const [tab, setTab]= useState(1);
 
+
+
+    // ON CLICK PARTICIAPATE
     const participate = (contestID, userID)=>{
-        participateContest(contestID, userID).then((res)=>{
-            // setParticipants(res.data.data.participants);
-            console.log(res)
-        }).catch(err=>console.log(err));
+        if(!state.user){
+            navigate('/signin')
+        }else{
+            participateContest(contestID, userID).then((res)=>{
+                console.log(res)
+            }).catch(err=>console.log(err));
+        }
     }
 
 
-    console.log(participants)
 
     useEffect(()=>{
         fetchHackathonItem(id);

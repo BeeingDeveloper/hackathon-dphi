@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const user = require('../models/user.model');
 const admin = require('../config/firebase.config');
+const Hackathon = require('../models/hackathon.model');
 
 
 
@@ -107,11 +108,33 @@ router.get('/all-users', async(req, res)=>{
 router.get('/fetch-user/:id', async(req, res)=>{
     const {id} = req.params;
     try {
-        const foundUser = await user.findById(id);
+        const foundUser = await user.findById(id).populate('joinedContest.contest');
         return res.status(200).send({success: true, data: foundUser});
     } catch (error) {
         return res.status(501).send({succcess: false, msg: "INTERNAL SERVER ERROR"});
     }
 })
+
+
+
+
+
+//  UPDATE JOINED CONTEST----------------------------------------------
+router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
+    const {contest_id, user_id} = req.params;
+    try {
+
+        const userObj = await user.findById(user_id);
+        const contestObj = await Hackathon.findById(contest_id);
+
+        userObj.joinedContest.push({contest: contestObj, dateJoined: new Date()});
+
+        const savedUser = await userObj.save();
+        await savedUser.populate('joinedContest.contest');
+        return res.status(200).send({success: true, data: savedUser});
+    } catch (error) {
+        return res.send({msg: "ERROR WHILE SEND"})
+    }
+});
 
 module.exports = router;
