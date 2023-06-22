@@ -9,7 +9,14 @@ const userSchema = new Schema({
     user_id: {type: String, required: true, unique: true},
     email_verified: {type: String, required: true},
     role: {type: String, required: true},
-    auth_time: {type: String, required: true}, 
+    auth_time: {type: String, required: true},
+    introduction: {type: String, length: 240}, 
+    educationalQualification: {type: String, length: 60}, 
+    location: {type: String, length: 100}, 
+    resume: {type: String}, 
+    gitbub: {type: String}, 
+    twitter: {type: String}, 
+    linkedIn: {type: String}, 
     joinedContest : [
         {
             contest: {
