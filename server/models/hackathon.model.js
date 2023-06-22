@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+
+
 const hackathonModel = Schema({
     name: {type: String, required: true},
     authorID: {type: String, required: true},
@@ -12,10 +14,14 @@ const hackathonModel = Schema({
     level: {type: String, required: true},
     participants: [
         {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+            user:{
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            dateJoined: {type: String}
         }
     ]
+    
 },
 {timestamps: true}
 );

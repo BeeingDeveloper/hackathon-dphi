@@ -115,13 +115,14 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
       if (!user) {
         return res.status(404).json({ success: false, message: 'User not found' });
       }
-      console.log(user)
-      // Push the user object to the participants array
-      contest.participants.push(user);
+
+
+
+      contest.participants.push({user: user, dateJoined: new Date()});
   
       // Save the updated contest
       const savedContest = await contest.save();
-      await savedContest.populate('participants');
+      await savedContest.populate('participants.user');
       return res.status(200).json({ success: true, data: savedContest });
     } catch (error) {
       console.error(error);
@@ -142,12 +143,22 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
 router.get('/fetch-participants/:contestID', async(req, res)=>{
     const contestID = req.params.contestID;
     try {
-        const participantsList = await hackathon.findById(contestID).populate('participants');
+        const participantsList = await hackathon.findById(contestID).populate('participants.user');
         return res.status(200).send(participantsList)
     } catch (error) {
         return res.status(400).send(error)
     }
 })
+
+
+
+
+
+//  DELETE PARTICIPANTS==========================================================================
+router.put('/remove-participant/:contest_id/:')
+
+
+
 
 
 

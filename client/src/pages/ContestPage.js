@@ -31,15 +31,17 @@ const ContestPage = () => {
 
     const participate = (contestID, userID)=>{
         participateContest(contestID, userID).then((res)=>{
-            setParticipants(res.data.data.participants);
+            // setParticipants(res.data.data.participants);
+            console.log(res)
         }).catch(err=>console.log(err));
     }
 
 
+    console.log(participants)
+
     useEffect(()=>{
         fetchHackathonItem(id);
     },[]);
-
 
     return (
         <div className=''>
@@ -86,17 +88,15 @@ const ContestPage = () => {
                     </div>
                 ) : (
                     <div className='w-[75%] m-auto mt-10'>
-                        <div className='flex w-full justify-between bg-slate-500 p-1 rounded-t-md'>
-                            <h1>Name</h1>
-                            <h1>Email</h1>
-                            <h1>Date of Join</h1>
-                            <h1>Action</h1>
+                        <div className='flex w-full justify-between bg-green-parrot p-2 text-xl font-semibold text-slate-100 rounded-t-md text-center'>
+                            <h1 className='w-[33.3%]'>Name</h1>
+                            <h1 className='w-[33.3%]'>Email</h1>
+                            <h1 className='w-[33.3%]'>Date of Join</h1>
                         </div>
                         {
                             participants?.map((elm, i)=>{
                                 return (
-                                    <UserItem key={i} name={elm.name} email={elm.email} date={'daga'} /> 
-                                
+                                    <UserItem key={elm.id} name={elm.user.name} email={elm.user.email} date={elm.dateJoined} profilePic={elm.user.imageURL} /> 
                                 )
                             })
                         }
