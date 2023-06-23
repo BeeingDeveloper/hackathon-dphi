@@ -12,9 +12,10 @@ const userSchema = new Schema({
     auth_time: {type: String, required: true},
     introduction: {type: String, length: 240}, 
     educationalQualification: {type: String, length: 60}, 
+    institutionName: {type: String, length: 60}, 
     location: {type: String, length: 100}, 
     resume: {type: String}, 
-    gitbub: {type: String}, 
+    github: {type: String}, 
     twitter: {type: String}, 
     linkedIn: {type: String}, 
     joinedContest : [

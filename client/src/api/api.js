@@ -67,6 +67,17 @@ export const fetchUserByID = async(id)=>{
         return null;
     }
 }
+
+
+
+export const updateUserByID = async(id, data)=>{
+    try {
+        const res = await axios.put(`${baseURL}api/user/update-user/${id}`, {...data});
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
 //============================ USERS API ===============================
 
 

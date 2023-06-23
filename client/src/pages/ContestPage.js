@@ -47,6 +47,9 @@ const ContestPage = () => {
 
 
 
+    console.log(hackathonItem)
+
+
     useEffect(()=>{
         fetchHackathonItem(id);
     },[]);
@@ -54,12 +57,12 @@ const ContestPage = () => {
     return (
         <div className=''>
             <div className='h-[30rem] flex flex-col gap-10 w-screen background-dark-green p-40'>
-                <h2 className='text-4xl text-white font-semibold'>Data Sprint 72 - Butterfly Identification</h2>
+                <h2 className='text-4xl text-white font-semibold'>{hackathonItem?.name}</h2>
                 <h2 className='text-slate-300'>{hackathonItem?.description}</h2>
 
                 <div className='bg-white p-2 flex gap-3 w-fit px-8 rounded-md font-bold'>
                     <BsBarChartFill className='my-1' />
-                    <h2>Easy</h2>
+                    <h2>{hackathonItem?.level === "Level 1" ? "Easy" : hackathonItem?.level === "Level 2" ? "Medium" : "Hard"}</h2>
                 </div>
 
                 <button className=' text-left bg-green-parrot w-fit p-2 rounded-md text-slate-200 px-4 font-semibold transition-all duration-90 hover:scale-90' onClick={()=>participate(id, userID)}>

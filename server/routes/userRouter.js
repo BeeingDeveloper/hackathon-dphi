@@ -47,7 +47,15 @@ const createNewUser = async(decodedValue, req, res)=>{
         user_id: decodedValue.user_id,
         email_verified: decodedValue.email_verified,
         role: "member",
-        auth_time: decodedValue.auth_time,  
+        auth_time: decodedValue.auth_time,
+        introduction : "", 
+        educationalQualification : "", 
+        institutionName : "", 
+        location : "", 
+        resume: "",
+        github: "", 
+        twitter: "", 
+        linkedIn: "", 
     });
             
     try {
@@ -114,6 +122,25 @@ router.get('/fetch-user/:id', async(req, res)=>{
         return res.status(501).send({succcess: false, msg: "INTERNAL SERVER ERROR"});
     }
 })
+
+
+
+
+//  UPDATE USER---------------------------------------------------------
+router.put('/update-user/:id', async(req, res)=>{
+    const {id} = req.params;
+    try {
+        const { introduction, educationalQualification, institutionName, location, resume, github, twitter, linkedIn } = req.body;
+        const updateInformation = { introduction, educationalQualification, institutionName, location, resume, github, twitter, linkedIn }
+        
+        const updatedUser = await user.findByIdAndUpdate(id, updateInformation);
+        return res.status(200).send({success: true, data: updatedUser})
+    } catch (error) {
+        return res.status(200).send({success: true, msg: "INTERNAL SERVER ERROR"});
+    }
+});
+//----------------------------------------------------------------------
+
 
 
 
