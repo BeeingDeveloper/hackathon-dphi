@@ -99,9 +99,9 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
 
                 </label>
             ) : (
-                <div className='w-full h-full bg-green-parrot rounded-md'>
+                <div className='w-full h-fit bg-green-parrot rounded-md'>
                     <img src={imageURL} className='h-full w-full rounded-xl p-1' />
-                    <motion.div whileHover={{scale: 1.1}} className='relative bottom-12 w-fit p-1 text-3xl rounded-full left-[1rem] bg-red-600'>
+                    <motion.div whileHover={{scale: 1.1}} className=' my-2 ml-2 w-fit p-1 text-3xl rounded-full left-[1rem] bg-red-500 cursor-pointer'>
                       <MdDeleteForever onClick={()=>deleteIMG(imageURL)} />
                     </motion.div>
                 </div>

@@ -40,7 +40,7 @@ const ContestPage = () => {
             navigate('/signin')
         }else{
             participateContest(contestID, userID).then((res)=>{
-                console.log(res)
+                console.log(res.data)
             }).catch(err=>console.log(err));
         }
     }
@@ -56,7 +56,7 @@ const ContestPage = () => {
 
     return (
         <div className=''>
-            <div className='h-[30rem] flex flex-col gap-10 w-screen background-dark-green p-40'>
+            <div className='h-auto flex flex-col gap-10 w-screen background-dark-green p-20 px-56'>
                 <h2 className='text-4xl text-white font-semibold'>{hackathonItem?.name}</h2>
                 <h2 className='text-slate-300'>{hackathonItem?.description}</h2>
 
@@ -65,14 +65,15 @@ const ContestPage = () => {
                     <h2>{hackathonItem?.level === "Level 1" ? "Easy" : hackathonItem?.level === "Level 2" ? "Medium" : "Hard"}</h2>
                 </div>
 
-                <button className=' text-left bg-green-parrot w-fit p-2 rounded-md text-slate-200 px-4 font-semibold transition-all duration-90 hover:scale-90' onClick={()=>participate(id, userID)}>
+                <button className=' text-left bg-green-parrot w-fit p-2 rounded-md text-slate-200 px-4 font-semibold transition-all duration-90 hover:scale-90' 
+                onClick={()=>participate(id, userID)}>
                     PARTICIPATE
                 </button>
             </div>
 
             <div className='h-16 w-screen bg-white shadow-xl shadow-slate-400'> 
                 <div className='w-[75%] m-auto flex justify-between'>
-                    <div className='flex w-fit gap-5 relative top-5'>
+                    <div className='flex w-fit gap-5 relative top-5 cursor-pointer'>
                         <div className='flex flex-col' onClick={()=>setTab(1)} >
                             <h2 className='font-semibold text-2xl w-fit m-auto'>Overview</h2>
                             <div className={` transition-all duration-150 top-10 h-[7px] bg-green-parrot absolute ${tab == 1 ? 'left-0 w-32' : 'left-[8rem] w-[12rem]'}`}></div>
@@ -98,7 +99,7 @@ const ContestPage = () => {
         
                     </div>
                 ) : (
-                    <div className='w-[75%] m-auto mt-10 shadow-lg shadow-slate-400'>
+                    <div className='w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>
                         <div className='flex w-full justify-between bg-green-parrot p-2 text-xl font-semibold text-slate-100 rounded-t-md text-center'>
                             <h1 className='w-[33.3%]'>Name</h1>
                             <h1 className='w-[33.3%]'>Email</h1>

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchUserByID, updateUserByID } from '../api/api';
 import {BsGithub} from 'react-icons/bs'
-import {FaTwitter} from 'react-icons/fa'
+import {FaFilePdf, FaTwitter} from 'react-icons/fa'
 import {BsLinkedin} from 'react-icons/bs'
 import {FiEdit} from 'react-icons/fi'
 import {HiMail} from 'react-icons/hi'
@@ -14,6 +14,7 @@ import Modal from '@mui/material/Modal';
 import {storage, firebaseApp} from '../config/firebase.config'
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useTheme } from '@mui/material';
+import ChallengeCard from '../components/ChallengeCard';
 
 
 
@@ -31,7 +32,7 @@ const UserProfile = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
      width:{xs:350, lg: 700},
-     height: {xs: 700, lg:1010},
+     height: {xs: 700, lg:820},
      overflow: 'scroll',
     [theme.breakpoints.down('xs')]: {
       width: '90%',
@@ -52,6 +53,8 @@ const UserProfile = () => {
   const [userData, setUserData] = useState(null);
   const ownerId = state?.user?._id;
   const userID = userData?._id;
+
+
 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -76,7 +79,6 @@ const UserProfile = () => {
       ...prevState, [name]:value
     }));
   }
-  console.log(bioInput)
 
 
 
@@ -95,7 +97,6 @@ const UserProfile = () => {
         setUserData(res.data)
     })
   }
-
 
 
 
@@ -164,8 +165,8 @@ const UserProfile = () => {
   return (
     <div className='w-screen'>
       <div className='h-auto lg:h-[30rem] flex flex-col gap-10 w-screen background-dark-green p-4 lg:p-20'>
-        <div className='flex  relative w-full lg:w-[90%] m-auto flex-col lg:flex-row  '>
-          <img src={userData?.imageURL} alt='profilePIC' className='  w-[80%] m-auto lg:m-0 lg:w-80 lg:h-80 rounded-full' />
+        <div className='flex  relative w-full lg:w-[85%] m-auto flex-col lg:flex-row h-full'>
+          <img src={userData?.imageURL} alt='profilePIC' className='  w-[80%] my-auto lg:m-0 lg:w-64 lg:h-64 relative top-5  rounded-full' />
           
           <div className='h-full w-2 bg-green-parrot mx-20'>
           </div>
@@ -181,15 +182,15 @@ const UserProfile = () => {
           >
             <Box sx={style}>
               <div className='w-full h-full rounded-[10px]'>
-                <h2 className='text-2xl font-semibold rounded-t-[10px] py-2 text-center bg-green-parrot text-slate-200'>UPDATE INFORMATION</h2>
-                <form className=' p-2 lg:p-10 text-lg lg:text-xl w-full flex flex-col '>
+                <h2 className='text-xl font-semibold rounded-t-[10px] py-2 text-center bg-green-parrot text-slate-200'>UPDATE INFORMATION</h2>
+                <form className=' p-2 lg:p-10 text-lg w-full flex flex-col '>
                   <label className='my-2'>Introduction:</label>
                   <input 
                     name='introduction'
                     required
                     value={bioInput.introduction}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />
                   
                   
                   <label className='my-2'>Educational Qualification:</label>
@@ -198,7 +199,7 @@ const UserProfile = () => {
                     required
                     value={bioInput.educationalQualification}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                  
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                  
                   
                   <label className='my-2'>Location:</label>
                   <input 
@@ -206,7 +207,7 @@ const UserProfile = () => {
                     required
                     value={bioInput.location}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                  
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                  
                   
                   <label className='my-2'>Institution Name:</label>
                   <input 
@@ -214,7 +215,7 @@ const UserProfile = () => {
                     required
                     value={bioInput.institutionName}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                
                   
 
                   <label className='my-2'>Github:</label>
@@ -223,7 +224,7 @@ const UserProfile = () => {
                     required
                     value={bioInput.github}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                
                   
                   <label className='my-2'>Twitter:</label>
                   <input 
@@ -231,7 +232,7 @@ const UserProfile = () => {
                     required
                     value={bioInput.twitter}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                
                   
                   <label className='my-2 '>Linked In:</label>
                   <input 
@@ -239,7 +240,7 @@ const UserProfile = () => {
                     required
                     value={bioInput.linkedIn}
                     onChange={handleChange}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                
                   
                   <label className='my-2 flex justify-between'>
                     <h2>Resume:</h2>
@@ -251,7 +252,7 @@ const UserProfile = () => {
                     name='resume'
                     required
                     onChange={handleFile}
-                    className='bg-slate-300 outline-none rounded-md block p-2 w-full mb-5'  />                
+                    className='bg-slate-300 outline-none rounded-md block p-1 w-full mb-5'  />                
                   
                   <button 
                     className='bg-green-parrot p-2 px-4 rounded-md font-semibold text-slate-200  m-auto'
@@ -269,13 +270,13 @@ const UserProfile = () => {
 
 
           <div className='text-slate-200 pt-10 lg:pt-0'>
-            <h2 className='text-4xl lg:text-5xl font-semibold text-slate-200'>{userData?.name}</h2>
+            <h2 className='text-xl lg:text-2xl font-semibold text-slate-200'>{userData?.name}</h2>
 
             <div className='leading-10 my-5 text-xl  lg:pt-0 flex flex-col gap-3'>
-              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-2xl mr-5'>Introduction:</span> {userData?.introduction} <i>I am self motivated full stack developer</i></h2>
-              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-2xl mr-5'>Educational Qualification:</span> <i>{userData?.educationalQualification}</i></h2>
-              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-2xl mr-5'>Institution Name:</span> <i>{userData?.institutionName}</i></h2>
-              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-2xl mr-5'>Location:</span> <i>{userData?.location}</i></h2>
+              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-lg mr-5'>Introduction:</span> <i>{userData?.introduction} </i></h2>
+              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-lg mr-5'>Educational Qualification:</span> <i>{userData?.educationalQualification}</i></h2>
+              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-lg mr-5'>Institution Name:</span> <i>{userData?.institutionName}</i></h2>
+              <h2 className='text-sm lg:text-xl'><span className='font-bold text-lg lg:text-lg mr-5'>Location:</span> <i>{userData?.location}</i></h2>
             </div>
             <div className='py-5 lg:py-0'>
               <h2 className='text-2xl font-semibold'><u>Contact:</u></h2>
@@ -304,7 +305,7 @@ const UserProfile = () => {
                 userData?.twitter &&
                 <a href={userData?.twitter} target='_twitter'>
                   <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
-                    <BsGithub className='my-auto' />
+                    <FaTwitter className='my-auto' />
                     <h2>Twitter</h2>
                   </div>
                 </a>
@@ -321,7 +322,7 @@ const UserProfile = () => {
                 userData?.resume &&
                 <a href={userData?.resume} target='_resume'>
                   <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
-                    <BsGithub className='my-auto' />
+                    <FaFilePdf className='my-auto' />
                     <h2>Resume</h2>
                   </div>
                 </a>
@@ -335,7 +336,7 @@ const UserProfile = () => {
           {
             ownerId === userID ?   <button 
                                       onClick={()=>setOpen(true)}
-                                      className='flex gap-3 bg-green-parrot h-fit p-2 px-4 rounded-md absolute top-0 right-0 text-2xl font-bold text-slate-300 transition-all duration-150 hover:scale-90'>
+                                      className='flex gap-3 bg-green-parrot h-fit p-2 px-4 rounded-md absolute top-0 right-0 text-lg font-bold text-slate-300 transition-all duration-150 hover:scale-90'>
                                     <FiEdit className='mt-[2px]' />
                                     <h2 className='hidden lg:block'>UPDATE</h2>
                                   </button> : <></>
@@ -344,7 +345,27 @@ const UserProfile = () => {
 
         </div>
       </div>
+      <div className='background-light-dark-green w-full min-h-[40rem]'>
+          <h2 className='text-center text-3xl py-5 font-semibold text-slate-300'><u>Joined Contest : {userData?.joinedContest?.length}</u></h2>
 
+          <div className='w-[80%] m-auto grid grid-cols-1 lg:grid-cols-3'>
+            {userData?.joinedContest?.map((elm, i)=>{
+              return(
+                <ChallengeCard 
+                  key={i}
+                  id={elm.contest._id}
+                  name={elm.contest.name} 
+                  imageURL={elm.contest.imageURL}
+                  description={elm.contest.description} 
+                  startDate={elm.contest.startDate}
+                  endDate={elm.contest.endDate}
+                  level={elm.contest.level}
+                  // elm={elm}
+                />
+              )
+            })}
+          </div>
+      </div>
     </div>
   );
 };

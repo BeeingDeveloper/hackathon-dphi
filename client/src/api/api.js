@@ -136,7 +136,7 @@ export const fetchHackathons = async()=>{
 //  UPDATED PARTICIAPANTS
 export const participateContest = async(contestID, userID)=>{
     try {
-        const res = await axios.post(`${baseURL}api/hackathon/get-contest/${contestID}/${userID}`);
+        const res = await axios.post(`${baseURL}api/user/get-contest/${contestID}/${userID}`);
         return res;
     } catch (error) {
         return null;

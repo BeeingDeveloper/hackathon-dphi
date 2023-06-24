@@ -4,7 +4,7 @@ const admin = require('../config/firebase.config');
 const Hackathon = require('../models/hackathon.model');
 
 
-
+//ON SIGN IN---------------------------------------------------------
 router.get('/signin', async(req, res)=>{
 
     if(!req.headers.authorization){
@@ -30,7 +30,7 @@ router.get('/signin', async(req, res)=>{
         return res.status(505).json({msg: "INTERNAL SERVER ERROR"});
     }
 });
-
+//----------------------------------------------------------------------
 
 
 
@@ -106,7 +106,7 @@ router.get('/all-users', async(req, res)=>{
         return res.status(400).send({success: false, msg: "THERE IS AN ERROR AT FETCHING ALLUSERS"});
     }
 });
-
+//----------------------------------------------------------------------
 
 
 
@@ -122,6 +122,7 @@ router.get('/fetch-user/:id', async(req, res)=>{
         return res.status(501).send({succcess: false, msg: "INTERNAL SERVER ERROR"});
     }
 })
+//----------------------------------------------------------------------
 
 
 
@@ -146,7 +147,7 @@ router.put('/update-user/:id', async(req, res)=>{
 
 
 
-//  UPDATE JOINED CONTEST----------------------------------------------
+//  UPDATE JOINED CONTEST BY USER---------------------------------------
 router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
     const {contest_id, user_id} = req.params;
     try {
@@ -154,6 +155,16 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
         const userObj = await user.findById(user_id);
         const contestObj = await Hackathon.findById(contest_id);
 
+        //  CEHCK IF OBJECT ID EXIST IN JOINED CONTEST ARRAY ?
+        const contestExists = userObj.joinedContest.some(elm => elm.contest.equals(contestObj._id));
+        
+
+        //  RETURN MSG TO USER AS ALREADY JOINED
+        if (contestExists) {
+            return res.status(400).json({ success: false, message: 'You have already joined the contest' });
+        }
+
+        //  ELSE ADD OBJECT TO ARRAY
         userObj.joinedContest.push({contest: contestObj, dateJoined: new Date()});
 
         const savedUser = await userObj.save();
@@ -163,5 +174,9 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
         return res.send({msg: "ERROR WHILE SEND"})
     }
 });
+//----------------------------------------------------------------------
+
+
+
 
 module.exports = router;
