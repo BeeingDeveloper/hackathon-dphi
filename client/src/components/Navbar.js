@@ -41,7 +41,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className='w-screen h-16 bg-slate-500 z-50'>
+    <nav className='w-screen h-16 bg-slate-500 z-50 relative'>
         <div className=' h-16 fixed bg-white w-screen flex justify-between '>
           <div className='w-[80%] m-auto flex justify-between'>
               <Link to='/'>

@@ -50,7 +50,7 @@ function App() {
 
 
   return (
-    <div className="">
+    <div className=" w-screen">
         <Navbar setAuth={setAuth} auth={auth} />
         <Routes>
           <Route path='/' element={<Home  /> } />
