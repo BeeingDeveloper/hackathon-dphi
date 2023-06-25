@@ -58,3 +58,19 @@
 .rotate-back{
     transform: rotateX(-90deg);
 }
+
+
+
+
+/* ============================ MEDIA QUERY FOR ALERT =========================== */
+
+/* .alert-dialouge{
+    position: relative;
+}
+
+
+/* @media (max-width: 600px) {
+    .alert-dialouge{
+        left: 10%
+    }
+  } */ 

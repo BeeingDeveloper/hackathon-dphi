@@ -130,7 +130,7 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
 
 const CreateChallenges = () => {
 
-    const {state, dispatch} = useContext(StateContext);
+    const {state, dispatch, activeAlert, setActiveAlert, alertMsg, setAlertMsg, isPositive, setIsPositive} = useContext(StateContext);
     const {hackathons, user} = state
     
     const userID = user?.user_id;
@@ -224,6 +224,14 @@ const CreateChallenges = () => {
             fetchHackathons().then((result)=>{
                 dispatch({type: actionType.SET_HACKTHONS, hackathons: result.data});
             })
+
+            setActiveAlert(true);
+            setIsPositive(true);
+            setAlertMsg(res.msg);
+            setTimeout(()=>{
+                setActiveAlert(false);
+                setAlertMsg("");
+            },3000)
         });
 
         setChallengeName('');

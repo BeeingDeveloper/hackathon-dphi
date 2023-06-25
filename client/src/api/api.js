@@ -134,14 +134,19 @@ export const fetchHackathons = async()=>{
 
 
 //  UPDATED PARTICIAPANTS
-export const participateContest = async(contestID, userID)=>{
+export const participateContest = async (contestID, userID) => {
     try {
-        const res = await axios.post(`${baseURL}api/user/get-contest/${contestID}/${userID}`);
-        return res;
+      const userUpdatedRes = await axios.post(`${baseURL}api/user/get-contest/${contestID}/${userID}`);
+      const contestUpdatedRes = await axios.post(`${baseURL}api/hackathon/get-contest/${contestID}/${userID}`);
+
+      const res = {user: userUpdatedRes, contest: contestUpdatedRes}
+
+      return res; // Return the response data
     } catch (error) {
-        return null;
+      console.error('Error during API call:', error); // Log the error for debugging
+      return null;
     }
-}
+  };
 
 
 

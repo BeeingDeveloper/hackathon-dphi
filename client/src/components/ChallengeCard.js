@@ -183,7 +183,7 @@ const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, lev
     
 
   return (
-    <div className='w-[354px] text-center bg-white text-black font-semibold rounded-2xl my-10 md:my-3 flex flex-col gap-2 m-auto md:m-5 lg:m-10'>
+    <div className='w-[354px] text-center bg-white text-black font-semibold rounded-2xl  md:my-3 lg:my-10 flex flex-col  m-auto '>
         <img src={imageURL} className='w-[354px] h-[174px] rounded-t-2xl ' />
         <div className='px-10 py-5 flex flex-col gap-5'>
             {status === 'Active' && <h3 className='bg-green-300 w-fit m-auto p-1 rounded-md text-[0.7rem]'>Active</h3>}

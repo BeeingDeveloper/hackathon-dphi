@@ -164,11 +164,11 @@ const UserProfile = () => {
 
   return (
     <div className='w-screen'>
-      <div className='h-auto lg:h-[30rem] flex flex-col gap-10 w-screen background-dark-green p-4 lg:p-20'>
+      <div className='h-auto lg:h-[30rem] flex flex-col gap-10 w-full background-dark-green p-4 lg:p-20'>
         <div className='flex  relative w-full lg:w-[85%] m-auto flex-col lg:flex-row h-full'>
           <img src={userData?.imageURL} alt='profilePIC' className='  w-[80%] my-auto lg:m-0 lg:w-64 lg:h-64 relative top-5  rounded-full' />
           
-          <div className='h-full w-2 bg-green-parrot mx-20'>
+          <div className='h-full min-w-[8px] bg-green-parrot mx-10'>
           </div>
 
 
@@ -280,11 +280,11 @@ const UserProfile = () => {
             </div>
             <div className='py-5 lg:py-0'>
               <h2 className='text-2xl font-semibold'><u>Contact:</u></h2>
-              <div className='flex mt-5 gap-10 flex-col lg:flex-row '>
+              <div className='flex mt-5 flex-col lg:flex-row gap-2'>
                 {
                 userData?.github &&
-                  <a href={userData?.github} target='_github'>
-                    <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
+                  <a href={userData?.github} target='_github' >
+                    <div className='bg-slate-900 flex gap-3 text-2xl p-2 rounded-md transition-all duration-75 hover:scale-90'>
                       <BsGithub className='my-auto' />
                       <h2>GitHub</h2>
                     </div>
@@ -294,7 +294,7 @@ const UserProfile = () => {
                 {
                 userData?.linkedIn &&
                   <a href={userData?.linkedIn} target='_linkedIn'>
-                    <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
+                    <div className='bg-slate-900 flex gap-3 text-2xl p-2 rounded-md transition-all duration-75 hover:scale-90'>
                       <BsLinkedin className='my-auto' />
                       <h2 className='w-[7rem]'>Linked In</h2>
                     </div>
@@ -304,7 +304,7 @@ const UserProfile = () => {
                 {
                 userData?.twitter &&
                 <a href={userData?.twitter} target='_twitter'>
-                  <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
+                  <div className='bg-slate-900 flex gap-3 text-2xl p-2 rounded-md transition-all duration-75 hover:scale-90'>
                     <FaTwitter className='my-auto' />
                     <h2>Twitter</h2>
                   </div>
@@ -312,7 +312,7 @@ const UserProfile = () => {
                 }
 
                 <a href={`mailto:${userData?.email}`} target='_email'>
-                  <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
+                  <div className='bg-slate-900 flex gap-3 text-2xl p-2 rounded-md transition-all duration-75 hover:scale-90'>
                     <HiMail className='my-auto ' />
                     <h2>Email</h2>
                   </div>
@@ -321,7 +321,7 @@ const UserProfile = () => {
                 {
                 userData?.resume &&
                 <a href={userData?.resume} target='_resume'>
-                  <div className='bg-slate-900 flex gap-3 text-2xl p-2 px-6 rounded-md transition-all duration-75 hover:scale-90'>
+                  <div className='bg-slate-900 flex gap-3 text-2xl p-2 rounded-md transition-all duration-75 hover:scale-90'>
                     <FaFilePdf className='my-auto' />
                     <h2>Resume</h2>
                   </div>

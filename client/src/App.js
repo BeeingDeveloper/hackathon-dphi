@@ -13,6 +13,7 @@ import { firebaseApp } from './config/firebase.config';
 import AdminPanel from './pages/AdminPanel';
 import ContestPage from './pages/ContestPage';
 import UserProfile from './pages/UserProfile';
+import CustomAlert from './components/CustomAlert';
 // import StateProvider from './context/StateProvider';
 // import firebase from 'firebase/compat';
 
@@ -51,6 +52,7 @@ function App() {
 
   return (
     <div className=" w-screen">
+        <CustomAlert />
         <Navbar setAuth={setAuth} auth={auth} />
         <Routes>
           <Route path='/' element={<Home  /> } />

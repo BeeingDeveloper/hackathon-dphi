@@ -16,7 +16,7 @@ router.post('/create', async(req, res)=>{
 
     try {
         const savedHackthon = await newHackathon.save();
-        return res.status(200).send({success: true, data: savedHackthon});
+        return res.status(200).send({success: true, data: savedHackthon, msg: "Contest created successfully"});
     } catch (error) {
         return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
     }
@@ -120,15 +120,17 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
       if (!user) {
         return res.status(404).json({ success: false, message: 'User not found' });
       }
-
-
+      const isUserExist = contest.participants.some(elm => elm.user.equals(user._id))
+      if (isUserExist) {
+        return res.status(200).send({ success: false, msg: 'User already joined the contest' });
+    }
 
       contest.participants.push({user: user, dateJoined: new Date()});
   
       // Save the updated contest
       const savedContest = await contest.save();
       await savedContest.populate('participants.user');
-      return res.status(200).json({ success: true, data: savedContest });
+      return res.status(200).json({ success: true, data: savedContest, msg: "Contest joined successfully" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ success: false, message: 'INTERNAL SERVER ERROR' });

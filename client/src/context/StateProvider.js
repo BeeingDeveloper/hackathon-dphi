@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useReducer, useState } from 'react'
 import { reducer } from './reducer'
 
 
@@ -12,10 +12,17 @@ const StateProvider = (props) => {
         allUsers: null
     }
 
+
+    const [activeAlert, setActiveAlert] = useState(false);
+    const [alertMsg, setAlertMsg] = useState('');
+    const [isPositive, setIsPositive] = useState(false);
+
+
+
     const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <StateContext.Provider value={{state, dispatch}} >
+    <StateContext.Provider value={{state, dispatch, activeAlert, setActiveAlert, alertMsg, setAlertMsg, isPositive, setIsPositive}} >
         {props.children}
     </StateContext.Provider>
   )

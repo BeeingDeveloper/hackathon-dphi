@@ -161,7 +161,7 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
 
         //  RETURN MSG TO USER AS ALREADY JOINED
         if (contestExists) {
-            return res.status(400).json({ success: false, message: 'You have already joined the contest' });
+            return res.status(200).send({ success: false, msg: 'Already joined the contest' });
         }
 
         //  ELSE ADD OBJECT TO ARRAY
@@ -169,7 +169,7 @@ router.post('/get-contest/:contest_id/:user_id', async(req, res)=>{
 
         const savedUser = await userObj.save();
         await savedUser.populate('joinedContest.contest');
-        return res.status(200).send({success: true, data: savedUser});
+        return res.status(200).send({success: true, data: savedUser, msg: "Contest joined successfully"});
     } catch (error) {
         return res.send({msg: "ERROR WHILE SEND"})
     }

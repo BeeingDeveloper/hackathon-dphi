@@ -10,7 +10,6 @@ import { StateContext } from '../context/StateProvider';
 
 const ContestPage = () => {
     const navigate = useNavigate();
-
     const {id} = useParams();
     
     const [hackathonItem, setHackathonItem] = useState(null);
@@ -18,7 +17,9 @@ const ContestPage = () => {
     const [tab, setTab]= useState(1);
 
 
-    const {state} = useContext(StateContext);
+
+
+    const {state, activeAlert, setActiveAlert, alertMsg, setAlertMsg, isPositive, setIsPositive} = useContext(StateContext);
     const userID = state?.user?._id;
 
 
@@ -37,17 +38,48 @@ const ContestPage = () => {
     // ON CLICK PARTICIAPATE
     const participate = (contestID, userID)=>{
         if(!state.user){
-            navigate('/signin')
+            navigate('/signin');
+            setActiveAlert(true);
+            setAlertMsg("Please sign up");
+            setIsPositive(false);
+            setTimeout(()=>{
+                setActiveAlert(false);
+                setAlertMsg("");
+            },3000)
         }else{
             participateContest(contestID, userID).then((res)=>{
-                console.log(res.data)
+
+                const contestResponse = res.contest;
+                const userResponse = res.user;
+
+                if(userResponse.data.success === false){
+                    setActiveAlert(true)          
+                    setAlertMsg(userResponse.data.msg);
+                    setIsPositive(false);
+
+                    setTimeout(()=>{
+                        setActiveAlert(false);
+                        setAlertMsg("");    
+                    },3000);
+                }
+
+                if(userResponse.data.success === true){
+                    setActiveAlert(true)          
+                    setAlertMsg(userResponse.data.msg);
+                    setIsPositive(true);
+
+                    setTimeout(()=>{
+                        setActiveAlert(false);
+                        setAlertMsg("");    
+                    },3000)  
+                }
             }).catch(err=>console.log(err));
         }
     }
 
 
 
-    console.log(hackathonItem)
+    
 
 
     useEffect(()=>{
@@ -85,8 +117,8 @@ const ContestPage = () => {
                     </div>
 
                     <div className='flex gap-5'>
-                        <button className='p-2 bg-green-parrot text-white rounded-xl relative top-3 w-20 transition-all duration-150 hover:scale-75'>Edit</button>
-                        <button className='p-2 border-2 border-red-500 text-red-500 rounded-xl relative top-3 w-20 transition-all duration-150 hover:scale-75'>Delete</button>
+                        <button className='p-2 bg-green-parrot text-white rounded-xl relative top-3 w-20 transition-all duration-150 hover:scale-90'>Edit</button>
+                        <button className='p-2 border-2 border-red-500 text-red-500 rounded-xl relative top-3 w-20 transition-all duration-150 hover:scale-90'>Delete</button>
                     </div>
                 </div>
             </div>
