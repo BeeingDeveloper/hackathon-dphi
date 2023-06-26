@@ -17,7 +17,7 @@ const CustomAlert = () => {
             </div>
             <div className='flex'>
                 <h2 className={`text-2xl my-auto px-4 ${isPositive? 'text-green-500' : 'text-red-600'}`}>{isPositive ? <BsFillEmojiSmileFill /> :<BsFillEmojiFrownFill /> }</h2>
-                <h2 className='text-slate-900 my-auto font-semibold'>{alertMsg}</h2>
+                <h2 className='text-slate-900 my-auto font-semibold text-center'>{alertMsg}</h2>
             </div>
 
         </div>

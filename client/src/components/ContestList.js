@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {RiSearchLine} from 'react-icons/ri'
-import { fetchHackathons } from '../api/api'
+import { fetchHackathons, filterByLevel } from '../api/api'
 import { actionType } from '../context/reducer'
 import { StateContext } from '../context/StateProvider'
 import ChallengeCard from './ChallengeCard'
@@ -64,23 +64,41 @@ const ContestList = () => {
             fetchAllHackathons()
         }
     }
-
-
-
-    const handleChange = (event) => {
-        setSelected(event.target.value);
-
-        if(selected === 'active'){
-            filterByActive().then((res)=>{
-                setContestList(res.data);
-            })
-        }
-    };
     // ==========================================================================================
 
 
 
+    //  FILTER ITEMS=============================================================================
+    const handleChange = (event) => {
+        setSelected(event.target.value);
+    };
 
+    if(selected === "active"){
+        filterByActive().then((res)=>{
+            console.log(res);
+        });
+    }
+    if(selected === "upcoming"){
+        filterByUpcoming().then((res)=>{
+            console.log(res);
+        });
+    }
+    if(selected === "past"){
+        filterByPassed().then((res)=>{
+            console.log(res);
+        });
+    }
+    if(selected === "easy"){
+        filterByLevel("Level 1").then((res)=>{
+            console.log(res);
+        })
+    }
+    if(selected === "medium"){
+        filterByLevel("Level 2").then((res)=>{
+            console.log(res);
+        })
+    }
+    //============================================================================================
 
 
     useEffect(() => {
@@ -115,7 +133,7 @@ const ContestList = () => {
                             <h5 className='font-semibold ml-1'>Status</h5>
                             <hr />
                                 <MenuItem value={'all'}>All</MenuItem>
-                                <MenuItem value={'active'} onClick={filterByActiveFun}>Active</MenuItem>
+                                <MenuItem value={'active'} >Active</MenuItem>
                                 <MenuItem value={'upcoming'}>Upcoming</MenuItem>
                                 <MenuItem value={'past'}>Past</MenuItem>
                             <h5 className='font-semibold ml-1'>Level</h5>

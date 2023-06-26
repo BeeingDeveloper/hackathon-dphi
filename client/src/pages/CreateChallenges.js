@@ -210,36 +210,46 @@ const CreateChallenges = () => {
 
     // API FUNCTION FOR NEW HACKATHON
     const createHackathon = ()=>{
-        const newHackathon = {
-            name: challengeName,
-            authorID: userID,
-            imageURL: imageURL,
-            description: description,
-            startDate: startDate,
-            endDate: endDate,
-            level: level,  
-        }
-
-        createNewHackathon(newHackathon).then((res)=>{
-            fetchHackathons().then((result)=>{
-                dispatch({type: actionType.SET_HACKTHONS, hackathons: result.data});
-            })
-
+        if(!challengeName || !userID || !imageURL || !description || !startDate || !endDate || !level ){
             setActiveAlert(true);
-            setIsPositive(true);
-            setAlertMsg(res.msg);
+            setIsPositive(false);
+            setAlertMsg("Fill all the fields");
             setTimeout(()=>{
                 setActiveAlert(false);
                 setAlertMsg("");
             },3000)
-        });
-
-        setChallengeName('');
-        setStartDate(null);
-        setEndDate(null);
-        setDescription('');
-        setImageURL(null);
-        setLevel('Level 1');
+        }else{
+            const newHackathon = {
+                name: challengeName,
+                authorID: userID,
+                imageURL: imageURL,
+                description: description,
+                startDate: startDate,
+                endDate: endDate,
+                level: level,  
+            }
+    
+            createNewHackathon(newHackathon).then((res)=>{
+                fetchHackathons().then((result)=>{
+                    dispatch({type: actionType.SET_HACKTHONS, hackathons: result.data});
+                })
+    
+                setActiveAlert(true);
+                setIsPositive(true);
+                setAlertMsg(res.msg);
+                setTimeout(()=>{
+                    setActiveAlert(false);
+                    setAlertMsg("");
+                },3000)
+            });
+    
+            setChallengeName('');
+            setStartDate(null);
+            setEndDate(null);
+            setDescription('');
+            setImageURL(null);
+            setLevel('Level 1');
+        }
     }
 
     

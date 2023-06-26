@@ -197,3 +197,17 @@ export const filterByPassed = async()=>{
         return null;
     }
 }
+
+
+
+
+//  FILTER BY LEVEL
+export const filterByLevel = async(level)=>{
+    try {
+        const res = await axios.get(`${baseURL}api/hackathon/filter/level/${level}`);
+        console.log(res);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}

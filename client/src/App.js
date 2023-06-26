@@ -51,7 +51,7 @@ function App() {
 
 
   return (
-    <div className=" w-screen">
+    <div className=" w-screen h-screen overflow-scroll">
         <CustomAlert />
         <Navbar setAuth={setAuth} auth={auth} />
         <Routes>

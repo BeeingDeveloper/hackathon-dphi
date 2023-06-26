@@ -18,7 +18,7 @@ router.post('/create', async(req, res)=>{
         const savedHackthon = await newHackathon.save();
         return res.status(200).send({success: true, data: savedHackthon, msg: "Contest created successfully"});
     } catch (error) {
-        return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR"});
+        return res.status(401).send({success: false, msg: "INTERNAL SERVER ERROR", msg: "Fill all the fields"});
     }
 });
 // ===============================================================================================
@@ -212,6 +212,21 @@ router.put('/remove-participant/:contest_id/:')
                 return res.status(200).send({success: true, data: activeHackathons});
             } catch (error) {
                 return res.status(400).send({success: false, msg: "FAILED TO FITLER ITEMS"});
+            }
+        })
+
+
+
+
+
+        // --------------- BY EASY CONTEST
+        router.get('/filter/level/:lev', async(req, res)=>{
+            const level = req.params.lev;
+            try {
+                const hackathonItems = await hackathon.find({level: level});
+                return res.status(200).send({success: true, data: hackathonItems});
+            } catch (error) {
+                return res.status(400).send({success: false, msg: "FAILED TO FETCH BY LEVEL"});
             }
         })
 

@@ -24,7 +24,7 @@ const Intro = () => {
                         <div className='flex flex-col gap-5 lg:gap-10'>
                             <h2 className='text-[1.4rem] lg:text-[2.5rem] font-semibold'>Accelerate Innovation with Global AI Challenges</h2>
                             <h4 className='text-sm text-slate-300'>AI Challenges at DPhi simulate real-world problems. It is a great place to put your AI/Data Science skills to test on diverse datasets allowing you to foster learning through competitions.</h4>
-                            <Link to={`${!user ? 'signin' : '/create-challenge'}`}>
+                            <Link to={`${!user ? '/signin' : '/create-challenge'}`}>
                                 <motion.button whileHover={{scale: 0.95}} className='w-fit bg-white text-slate-900 font-semibold rounded-md p-2'>Create Challenge</motion.button>
                             </Link>
                         </div>
