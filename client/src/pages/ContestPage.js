@@ -15,6 +15,7 @@ const ContestPage = () => {
     const [hackathonItem, setHackathonItem] = useState(null);
     const [participants, setParticipants] = useState(null);
     const [tab, setTab]= useState(1);
+    const [isLoading, setIsLoading] = useState(true); // New state variable for loading animation
 
 
 
@@ -29,6 +30,8 @@ const ContestPage = () => {
         fetchHackathonByID(id).then((res)=>{
             setParticipants(res.data.participants);
             setHackathonItem(res.data);
+            setIsLoading(false); // Update loading state when data is fetched
+
         }).catch(err=>console.log(err))
     }
 
@@ -84,7 +87,7 @@ const ContestPage = () => {
 
     useEffect(()=>{
         fetchHackathonItem(id);
-    },[]);
+    },[tab]);
 
     return (
         <div className=''>
@@ -130,24 +133,30 @@ const ContestPage = () => {
         
         
                     </div>
-                ) : (
-                    <div className='w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>
-                        <div className='flex w-full justify-between bg-green-parrot p-2 text-xl font-semibold text-slate-100 rounded-t-md text-center'>
-                            <h1 className='w-[33.3%]'>Name</h1>
-                            <h1 className='w-[33.3%]'>Email</h1>
-                            <h1 className='w-[33.3%]'>Date of Join</h1>
-                        </div>
-                        {
-                            participants?.map((elm)=>{
-                                return (
-                                    <UserItem key={elm.id} userID={elm.user._id} name={elm.user.name} email={elm.user.email} date={elm.dateJoined} profilePic={elm.user.imageURL} /> 
-                                )
-                            })
-                        }
+                ) : 
+                    isLoading ? <></>:                    
+                        <div className='w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>
+                            <div className='flex w-full justify-between bg-green-parrot p-2 text-xl font-semibold text-slate-100 rounded-t-md text-center'>
+                                <h1 className='w-[33.3%]'>Name</h1>
+                                <h1 className='w-[33.3%]'>Email</h1>
+                                <h1 className='w-[33.3%]'>Date of Join</h1>
+                            </div>
+                            {
+                                participants?.map((elm) => (
+                                    <UserItem
+                                    key={elm.id}
+                                    userID={elm.user._id}
+                                    name={elm.user.name}
+                                    email={elm.user.email}
+                                    date={elm.dateJoined}
+                                    profilePic={elm.user.imageURL}
+                                    />
+                                ))
+                                }
+                            </div> 
+                    
 
-                        
-                    </div>
-                )
+                
             }
 
 

@@ -16,7 +16,7 @@ const UserItem = ({name, email, date, profilePic, userID}) => {
   return (
     <>
     <div className='flex font-bold p-2 w-full text-slate-900' onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}>
-        <img src={profilePic} alt='profilePic' className='rounded-full h-8 mx-5' />
+        <img src={profilePic} alt='dp' className='rounded-full h-8 mx-5' />
         <h2 className='w-[33.3%] my-auto'>{name}</h2>
         
         <button className={`${isHovered ? 'rotate-x' : 'rotate-back'}  relative left-[-5%] w-fit bg-green-parrot text-white p-1 font-normal whitespace-nowrap  rounded-md transition-all duration-150 hover:scale-75`}>
