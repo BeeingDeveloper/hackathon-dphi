@@ -7,7 +7,7 @@ import UserItem from '../components/UserItem';
 import { StateContext } from '../context/StateProvider';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import {BiTimeFive} from 'react-icons/bi'
 
 const ContestPage = () => {
     const navigate = useNavigate();
@@ -16,9 +16,14 @@ const ContestPage = () => {
     const [hackathonItem, setHackathonItem] = useState(null);
     const [participants, setParticipants] = useState(null);
     const [tab, setTab]= useState(1);
-    const [isLoading, setIsLoading] = useState(true); // New state variable for loading animation
-    let isExpired = false;
+    const [isLoading, setIsLoading] = useState(true); 
+    //--------------------------------------------------------------------------------------
 
+
+
+
+    //  HANDLE ACTIVE STATUS------------------------------------------------------------------------------------------------------------------------------
+    let isExpired = false;
     if(new Date(hackathonItem?.endDate) < new Date()){
         isExpired = true;
     }
@@ -29,32 +34,44 @@ const ContestPage = () => {
     let targetDate = "";
     let options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
 
-    if(new Date(hackathonItem?.startDate) > new Date()){ // YET TO START
+    if(new Date(hackathonItem?.startDate) > new Date()){ 
+        // YET TO START
         targetDate = `Starts On ${new Date(hackathonItem?.endDate).toDateString()} ${new Date(hackathonItem?.endDate).toLocaleString('en-US', options)}`;
     }else if(new Date(hackathonItem?.startDate) < new Date() && new Date(hackathonItem?.endDate) > new Date()){
-        //ACTIVE
+        //  WHEN CHALLENGE ACTIVE
         targetDate = `Ends On ${new Date(hackathonItem?.endDate).toDateString()} ${new Date(hackathonItem?.endDate).toLocaleString('en-US', options)}`;
     }else{
-        //  IF ENDED
+        //  WHEN CHALLENGE ENDED
         targetDate = `Ended On ${new Date(hackathonItem?.endDate).toDateString()} ${new Date(hackathonItem?.endDate).toLocaleString('en-US', options)}`;
     }
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // FETCH ALL HACKATHONS
+
+
+
+
+    // FETCH ALL HACKATHONS----------------------------------------------------------------
     const fetchHackathonItem = (id)=>{
         fetchHackathonByID(id).then((res)=>{
             setParticipants(res.data.participants);
             setHackathonItem(res.data);
-            setIsLoading(false); // Update loading state when data is fetched
-
+            setTimeout(()=>{
+                setIsLoading(false);            //  WHEN DATA FETCHED
+            },2000);
         }).catch(err=>console.log(err))
     }
+    //-------------------------------------------------------------------------------------
 
 
 
 
-    // ON CLICK PARTICIAPATE
+
+
+
+
+    // ON CLICK PARTICIAPATE---------------------------------------------------------------
     const participate = (contestID, userID)=>{
-        if(!state.user){
+        if(!state.user){                // WHEN USER DID NOT SIGNED UP
             navigate('/signin');
             setActiveAlert(true);
             setAlertMsg("Please sign up");
@@ -62,21 +79,21 @@ const ContestPage = () => {
             setTimeout(()=>{
                 setActiveAlert(false);
                 setAlertMsg("");
-            },3000)
+            },3000);
         }
-        else if(isExpired){
+        else if(isExpired){             // WHEN CONTEST HAS EXPIRED
             setActiveAlert(true);
             setAlertMsg("Contest has expired");
             setIsPositive(false);
             setTimeout(()=>{
                 setActiveAlert(false);
                 setAlertMsg("");
-            },3000)
+            },3000);
         }
         else{
             participateContest(contestID, userID).then((res)=>{
                 const userResponse = res.user;
-
+                //  WHEN USER ALREADY EXIST AS PARTICIPANTS
                 if(userResponse.data.success === false){
                     setActiveAlert(true)          
                     setAlertMsg(userResponse.data.msg);
@@ -88,6 +105,7 @@ const ContestPage = () => {
                     },3000);
                 }
 
+                //  WHEN USER DOESNOT EXIST, ADD USER AS PATICIPANTS
                 if(userResponse.data.success === true){
                     setActiveAlert(true)          
                     setAlertMsg(userResponse.data.msg);
@@ -96,11 +114,18 @@ const ContestPage = () => {
                     setTimeout(()=>{
                         setActiveAlert(false);
                         setAlertMsg("");    
-                    },3000)  
+                    },3000);
                 }
             }).catch(err=>console.log(err));
         }
     }
+    //-------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
     useEffect(()=>{
@@ -113,7 +138,8 @@ const ContestPage = () => {
             <div className='h-auto  w-screen background-dark-green '>
                 <div className='flex flex-col gap-10 w-screen lg:w-[75%] m-auto p-10 lg:p-20'>
 
-                    <h2 className='text-lg text-slate-200 font-semibold status-upcoming w-fit px-5 rounded-md'>{targetDate}</h2>
+                    <h2 className='text-lg text-slate-200 font-semibold status-upcoming w-fit px-5 rounded-md'>
+                        <BiTimeFive className='inline text-2xl m-2' />{targetDate}</h2>
                     <h2 className='text-4xl text-white font-semibold'>{hackathonItem?.name}</h2>
                     <h2 className='text-slate-300'>{hackathonItem?.description}</h2>
 
@@ -153,10 +179,12 @@ const ContestPage = () => {
         
                     </div>
                 ) : 
-                    isLoading ?     
+                    isLoading ? 
+                        <div className='w-fit m-auto mt-10'>
                             <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
                                 <CircularProgress color="success" />
                             </Stack>
+                        </div>
 
                     :   participants.length >0 ?               
                         <div className='w-[95%] lg:w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>

@@ -160,9 +160,6 @@ router.get('/fetch-participants/:contestID', async(req, res)=>{
 
 
 
-//  DELETE PARTICIPANTS==========================================================================
-router.put('/remove-participant/:contest_id/:')
-
 
 
 
