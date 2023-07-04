@@ -5,7 +5,8 @@ import '../utils/style.css'
 import {BsBarChartFill} from 'react-icons/bs';
 import UserItem from '../components/UserItem';
 import { StateContext } from '../context/StateProvider';
-
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const ContestPage = () => {
@@ -16,14 +17,27 @@ const ContestPage = () => {
     const [participants, setParticipants] = useState(null);
     const [tab, setTab]= useState(1);
     const [isLoading, setIsLoading] = useState(true); // New state variable for loading animation
+    let isExpired = false;
 
+    if(new Date(hackathonItem?.endDate) < new Date()){
+        isExpired = true;
+    }
 
-
-
-    const {state, activeAlert, setActiveAlert, alertMsg, setAlertMsg, isPositive, setIsPositive} = useContext(StateContext);
+    const {state, setActiveAlert, setAlertMsg, setIsPositive} = useContext(StateContext);
     const userID = state?.user?._id;
 
+    let targetDate = "";
+    let options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
 
+    if(new Date(hackathonItem?.startDate) > new Date()){ // YET TO START
+        targetDate = `Starts On ${new Date(hackathonItem?.endDate).toDateString()} ${new Date(hackathonItem?.endDate).toLocaleString('en-US', options)}`;
+    }else if(new Date(hackathonItem?.startDate) < new Date() && new Date(hackathonItem?.endDate) > new Date()){
+        //ACTIVE
+        targetDate = `Ends On ${new Date(hackathonItem?.endDate).toDateString()} ${new Date(hackathonItem?.endDate).toLocaleString('en-US', options)}`;
+    }else{
+        //  IF ENDED
+        targetDate = `Ended On ${new Date(hackathonItem?.endDate).toDateString()} ${new Date(hackathonItem?.endDate).toLocaleString('en-US', options)}`;
+    }
 
     // FETCH ALL HACKATHONS
     const fetchHackathonItem = (id)=>{
@@ -49,10 +63,18 @@ const ContestPage = () => {
                 setActiveAlert(false);
                 setAlertMsg("");
             },3000)
-        }else{
+        }
+        else if(isExpired){
+            setActiveAlert(true);
+            setAlertMsg("Contest has expired");
+            setIsPositive(false);
+            setTimeout(()=>{
+                setActiveAlert(false);
+                setAlertMsg("");
+            },3000)
+        }
+        else{
             participateContest(contestID, userID).then((res)=>{
-
-                const contestResponse = res.contest;
                 const userResponse = res.user;
 
                 if(userResponse.data.success === false){
@@ -81,48 +103,45 @@ const ContestPage = () => {
     }
 
 
-
-    
-
-
     useEffect(()=>{
+        document.title = "Contest | Ai-Planet"
         fetchHackathonItem(id);
     },[tab]);
 
     return (
         <div className=''>
-            <div className='h-auto flex flex-col gap-10 w-screen background-dark-green p-20 px-56'>
-                <h2 className='text-4xl text-white font-semibold'>{hackathonItem?.name}</h2>
-                <h2 className='text-slate-300'>{hackathonItem?.description}</h2>
+            <div className='h-auto  w-screen background-dark-green '>
+                <div className='flex flex-col gap-10 w-screen lg:w-[75%] m-auto p-10 lg:p-20'>
 
-                <div className='bg-white p-2 flex gap-3 w-fit px-8 rounded-md font-bold'>
-                    <BsBarChartFill className='my-1' />
-                    <h2>{hackathonItem?.level === "Level 1" ? "Easy" : hackathonItem?.level === "Level 2" ? "Medium" : "Hard"}</h2>
+                    <h2 className='text-lg text-slate-200 font-semibold status-upcoming w-fit px-5 rounded-md'>{targetDate}</h2>
+                    <h2 className='text-4xl text-white font-semibold'>{hackathonItem?.name}</h2>
+                    <h2 className='text-slate-300'>{hackathonItem?.description}</h2>
+
+                    <div className='bg-white p-2 flex gap-3 w-fit px-8 rounded-md font-bold'>
+                        <BsBarChartFill className='my-1' />
+                        <h2>{hackathonItem?.level === "Level 1" ? "Easy" : hackathonItem?.level === "Level 2" ? "Medium" : "Hard"}</h2>
+                    </div>
+
+                    <button className=' text-left bg-green-parrot w-fit p-2 rounded-md text-slate-200 px-4 font-semibold transition-all duration-90 hover:scale-90' 
+                    onClick={()=>participate(id, userID)}>
+                        PARTICIPATE
+                    </button>
                 </div>
-
-                <button className=' text-left bg-green-parrot w-fit p-2 rounded-md text-slate-200 px-4 font-semibold transition-all duration-90 hover:scale-90' 
-                onClick={()=>participate(id, userID)}>
-                    PARTICIPATE
-                </button>
             </div>
 
             <div className='h-16 w-screen bg-white shadow-xl shadow-slate-400'> 
                 <div className='w-[75%] m-auto flex justify-between'>
                     <div className='flex w-fit gap-5 relative top-5 cursor-pointer'>
                         <div className='flex flex-col' onClick={()=>setTab(1)} >
-                            <h2 className='font-semibold text-2xl w-fit m-auto'>Overview</h2>
-                            <div className={` transition-all duration-150 top-10 h-[7px] bg-green-parrot absolute ${tab == 1 ? 'left-0 w-32' : 'left-[8rem] w-[12rem]'}`}></div>
+                            <h2 className='font-semibold text-lg lg:text-2xl w-fit m-auto'>Overview</h2>
+                            <div className={` transition-all duration-150 top-10 h-[7px] bg-green-parrot absolute ${tab == 1 ? 'left-0 w-24 lg:w-32' : 'left-[6rem] lg:left-[8rem] w-[10rem] lg:w-[12rem]'}`}></div>
                         </div>
                         <h2
                             onClick={()=>setTab(2)} 
-                            className='font-semibold text-2xl w-fit m-auto '>Participant List</h2>
+                            className='font-semibold text-lg lg:text-2xl w-fit m-auto '>Participant List</h2>
 
                     </div>
 
-                    <div className='flex gap-5'>
-                        <button className='p-2 bg-green-parrot text-white rounded-xl relative top-3 w-20 transition-all duration-150 hover:scale-90'>Edit</button>
-                        <button className='p-2 border-2 border-red-500 text-red-500 rounded-xl relative top-3 w-20 transition-all duration-150 hover:scale-90'>Delete</button>
-                    </div>
                 </div>
             </div>
 
@@ -134,12 +153,17 @@ const ContestPage = () => {
         
                     </div>
                 ) : 
-                    isLoading ? <></>:                    
-                        <div className='w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>
+                    isLoading ?     
+                            <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+                                <CircularProgress color="success" />
+                            </Stack>
+
+                    :   participants.length >0 ?               
+                        <div className='w-[95%] lg:w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>
                             <div className='flex w-full justify-between bg-green-parrot p-2 text-xl font-semibold text-slate-100 rounded-t-md text-center'>
-                                <h1 className='w-[33.3%]'>Name</h1>
-                                <h1 className='w-[33.3%]'>Email</h1>
-                                <h1 className='w-[33.3%]'>Date of Join</h1>
+                                <h1 className='w-[33.3%] text-sm lg:text-xl'>Name</h1>
+                                <h1 className='w-[33.3%] text-sm lg:text-xl'>Email</h1>
+                                <h1 className='w-[33.3%] text-sm lg:text-xl'>Date of Join</h1>
                             </div>
                             {
                                 participants?.map((elm) => (
@@ -154,12 +178,9 @@ const ContestPage = () => {
                                 ))
                                 }
                             </div> 
-                    
-
-                
+                        : <h2 className='text-center text-2xl font-semibold pt-10'>NO PARICIPANTS</h2>
+                        
             }
-
-
         </div>
   )
 }

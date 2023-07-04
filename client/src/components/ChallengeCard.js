@@ -8,45 +8,11 @@ const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, lev
 
     const timerRef = useRef(null);
     const [timeLeft, setTimeLeft] = useState('');
-    const targetTime = new Date(startDate).getTime();
-    let isDisabled = false;
-
-
-    let status = '';
-    let endString = '';
-
-    if(new Date(startDate) < new Date() && endDate > new Date()){
-      targetTime = new Date(endDate).getTime();
-      status = 'Active';
-    }
-    if(new Date(startDate) > new Date()){
-      status = 'Upcoming';
-    }else if(new Date(endDate) < new Date()){
-      status = 'Past';
-      isDisabled = true;
-      let endDateStr = new Date(endDate);
-      let day = endDateStr.getDay();
-      let month = endDateStr.toLocaleString('default', { month: 'long' });
-      let year = endDateStr.getFullYear();
-
-      let hour = endDateStr.getHours();
-      let mint = endDateStr.getMinutes();
-
-
-      let suffix = "";
-      if (hour >= 12) {
-        suffix = "PM";
-        if (hour > 12) {
-          hour -= 12;
-        }
-      } else {
-        suffix = "AM";
-      }
-      year = year.toLocaleString().slice(3,5);
-      endString = `${day < 10 ? "0"+day : day } ${month}'${year} ${hour<10 ? "0"+hour : hour} : ${mint<10 ? "0"+mint : mint} ${suffix}`
-      console.log(endString)
-    }
-
+    const contestStartTime = new Date(startDate).getTime();
+    const contestEndTime = new Date(endDate).getTime();
+    const [status, setStatus] = useState('');
+    const [endString, setEndString] = useState('');
+    
 
 
     const countDown = (destination)=>{
@@ -55,10 +21,11 @@ const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, lev
       timerRef.current = setInterval(()=>{
         const currentTime = new Date().getTime();
         const distance = destination - currentTime;
+        
 
         if(distance <= 0){
-          console.log("countdown finished");
           clearInterval(timerRef.current);
+          timerRef.current = null;
           return;
         }
 
@@ -68,20 +35,53 @@ const ChallengeCard = ({name, id, imageURL, description, startDate, endDate, lev
         if(days < 10){days = `0${days}`}
         if(hours < 10){hours = `0${hours}`}
         if(minutes < 10){minutes = `0${minutes}`}
-        // console.log(`${days}d ${hours}h ${minutes}m ${seconds}s`)
         setTimeLeft(`${days}d ${hours}h ${minutes}m`);
-      },1000)
+      },1000);
     }
 
 
 
     useEffect(() => {
         if(new Date(endDate) < new Date() ){
-          return;
-        }else{
-          countDown(targetTime);
+          setStatus('Past');
+            let endDateStr = new Date(endDate);
+            let day = endDateStr.getDate();
+            let month = endDateStr.toLocaleString('default', { month: 'long' });
+            let year = endDateStr.getFullYear();
+
+            let hour = endDateStr.getHours();
+            let mint = endDateStr.getMinutes();
+
+        // console.log(new Date(endDate))
+            let suffix = "";
+            if (hour >= 12) {
+              suffix = "PM";
+              if (hour > 12) {
+                hour -= 12;
+              }
+            } else {
+              suffix = "AM";
+            }
+            year = year.toLocaleString().slice(3,5);
+            setEndString(`${day < 10 ? "0"+day : day } ${month}'${year} ${hour<10 ? "0"+hour : hour} : ${mint<10 ? "0"+mint : mint} ${suffix}`)
+            return;
         }
-    }, []);
+        if(new Date(startDate) > new Date()){
+          countDown(contestStartTime);
+          setStatus('Upcoming');
+        }
+        if(new Date(startDate) < new Date() && new Date(endDate) > new Date()){
+          countDown(contestEndTime);
+          setStatus('Active')
+        }
+
+        return () => {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+        };
+    }, [contestEndTime, endDate, startDate]);
 
 
     

@@ -14,13 +14,11 @@ import { filterByUpcoming } from '../api/api'
 
 const ContestList = () => {
 
-    const { state, dispatch } = useContext(StateContext);
-    const { hackathons } = state;
-    const [contestList, setContestList] = useState(null);
-    const [selected, setSelected] = useState('');
+    const [contestList, setContestList] = useState([]);
+    const [selected, setSelected] = useState('all');
     const [searchValue, setSearchValue] = useState('');
   
-    // Fetch all hackathons
+    // FETCH ALL HACKATHONS
     const fetchAllHackathons = () => {
       fetchHackathons()
         .then((res) => {
@@ -29,7 +27,7 @@ const ContestList = () => {
         .catch((err) => console.log(err));
     };
   
-    // Filter items by active status
+    // FILTER ITEM BY STATUS: ACTIVE
     const filterByActiveFun = () => {
       filterByActive()
         .then((res) => {
@@ -38,7 +36,7 @@ const ContestList = () => {
         .catch((err) => console.log(err));
     };
   
-    // Search items
+    // ON SEARCH
     const searchItems = () => {
       setContestList(
         contestList.filter((elm) => {
@@ -48,7 +46,7 @@ const ContestList = () => {
       );
     };
   
-    // Handle search input change
+    // ON CHANGE SERACH INPUT
     const handleSearchItem = (e) => {
       setSearchValue(e.target.value);
       searchItems();
@@ -57,44 +55,43 @@ const ContestList = () => {
       }
     };
   
-    // Handle filter select change
+    // HANDLE FILTER CHANGE
     const handleChange = (event) => {
       setSelected(event.target.value);
     };
   
-    // Apply the selected filter
+    // APPLYING FILTERS
     useEffect(() => {
       if (selected === 'all') {
         fetchAllHackathons();
       } else if (selected === 'active') {
         filterByActiveFun();
       } else if (selected === 'upcoming') {
-        filterByUpcoming()
-          .then((res) => {
+        filterByUpcoming().then((res) => {
             setContestList(res.data);
-          })
-          .catch((err) => console.log(err));
+          }).catch((err) => console.log(err));
       } else if (selected === 'past') {
-        filterByPassed()
-          .then((res) => {
+        filterByPassed().then((res) => {
             setContestList(res.data);
-          })
-          .catch((err) => console.log(err));
+          }).catch((err) => console.log(err));
       } else if (selected === 'easy') {
-        filterByLevel('Level 1')
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.log(err));
+        filterByLevel('Level 1').then((res) => {
+          setContestList(res.data)
+          }).catch((err) => console.log(err));
       } else if (selected === 'medium') {
-        filterByLevel('Level 2')
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.log(err));
+        filterByLevel('Level 2').then((res) => {
+          setContestList(res.data)
+          }).catch((err) => console.log(err));
+      } else{
+        filterByLevel('Level 3').then((res)=>{
+          setContestList(res.data)
+        })
       }
     }, [selected]);
   
+
+
+    
     useEffect(() => {
       fetchAllHackathons();
     }, []);
@@ -144,22 +141,24 @@ const ContestList = () => {
   
       <div className="w-[95%] lg:w-[80%] m-auto flex flex-col"></div>
     </div>
+
     <div className="w-[95%] lg:w-[85%] m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20 gap-10">
-      {contestList?.map((elm, i) => {
-        return (
-          <ChallengeCard
-            key={i}
-            id={elm._id}
-            name={elm.name}
-            imageURL={elm.imageURL}
-            description={elm.description}
-            startDate={elm.startDate}
-            endDate={elm.endDate}
-            level={elm.level}
-            // elm={elm}
-          />
-        );
-      })}
+    {contestList.length > 0 ? (
+          contestList.map((elm, i) => (
+            <ChallengeCard
+              key={i}
+              id={elm._id}
+              name={elm.name}
+              imageURL={elm.imageURL}
+              description={elm.description}
+              startDate={elm.startDate}
+              endDate={elm.endDate}
+              level={elm.level}
+            />
+          ))
+        ) : (
+          <h2 className="text-center font-semibold pt-10">NO DATA FOUND</h2>
+        )}
     </div>
   </div>
   )

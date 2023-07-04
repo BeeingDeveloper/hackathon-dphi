@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import LOGO from '../assets/images/icons/logo-dphi.png'
 import {Link, useNavigate} from 'react-router-dom'
 import '../utils/style.css'
@@ -36,9 +36,27 @@ const Navbar = () => {
     })
   }
 
-  
+  const [profilePicUrl, setProfilePicUrl] = useState('');
 
-
+  const fetchProfilePic = async () => {
+    try {
+      const response = await fetch(profilePic);
+      if (response.ok) {
+        const blob = await response.blob();
+        const imgUrl = URL.createObjectURL(blob);
+        setProfilePicUrl(imgUrl);
+      } else {
+        console.error('Failed to fetch profile picture');
+      }
+    } catch (error) {
+      console.error('Error fetching profile picture:', error);
+    }
+  };
+  useEffect(() => {
+    if (profilePic) {
+      fetchProfilePic();
+    }
+  }, [profilePic]);
 
   return (
     <nav className='w-screen h-16 bg-slate-500 z-50 relative'>
@@ -61,7 +79,7 @@ const Navbar = () => {
                           {
                             userName ? (
                               <div className='flex justify-center items-center bg-green-parrot rounded-full px-2 transition-all ease-out duration-150 hover:scale-90 h-fit my-3 text-lg font-semibold p-1 gap-1'>
-                                <img src={profilePic ? profilePic : null} className='w-4 h-4 md:h-8 md:w-8 rounded-full' />
+                                {profilePicUrl && <img src={profilePicUrl} className='w-4 h-4 md:h-8 md:w-8 rounded-full' />}
                                 <h2 className='text-sm md:text-lg text-slate-200 font-semibold pr-1'>{userName.split(" ")[0]}</h2>
                               </div>
                             ) : (
@@ -75,7 +93,8 @@ const Navbar = () => {
                         </div>
                     </Button>
                   </PopoverTrigger>
-                  <Portal  >
+
+                  <Portal>
                     <PopoverContent className='bg-green-parrot w-44 text-slate-200 font-semibold shadow-2xl shadow-red-500 rounded-lg p-2'>
                       <div className='flex flex-col gap-2'>
                           <motion.p 
@@ -88,9 +107,6 @@ const Navbar = () => {
                     </PopoverContent>
                   </Portal>
                 </Popover>
-
-
-
               </div>
           </div>
         </div>

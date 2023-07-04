@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CALENDER from '../assets/images/icons/uil_calender.svg'
 import '../utils/style.css'
 import {motion} from 'framer-motion'
@@ -131,30 +131,9 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
 const CreateChallenges = () => {
 
     const {state, dispatch, activeAlert, setActiveAlert, alertMsg, setAlertMsg, isPositive, setIsPositive} = useContext(StateContext);
-    const {hackathons, user} = state
+    const { user} = state
     
     const userID = user?.user_id;
-
-
-
-
-    //CONVERT TIME TO MONGODB------------------------------------------------------------------
-    // const convertDefaultDate = (systemDate)=>{
-    //     const localDate = systemDate.toLocaleDateString();
-    //     const localTime = systemDate.toTimeString();
-    //     let getDay = localDate.split('/')[1];
-    //     let getMonth =  localDate.split('/')[0];
-    //     let getYear = systemDate.getFullYear();
-
-    //     getDay = getDay < 10 ? `0${getDay}` : getDay;
-    //     getMonth = getMonth < 10 ? `0${getMonth}` : getMonth;
-
-    //     const finalTime = `${getYear}-${getMonth}-${getDay}T${localTime.slice(0,8)}.000+00:00`
-    //     return finalTime;
-    // }
-    //-----------------------------------------------------------------------------------------
-
-
 
 
 
@@ -174,37 +153,6 @@ const CreateChallenges = () => {
     //-----------------------------------------------------------------------
 
 
-
-
-
-
-
-    // //CONVERT TIME TO MONGODB------------------------------------------------
-    // const convertTimeToMongoDB =(localTime)=>{
-    //     const getDate = localTime;
-    //     const year = getDate.slice(0,10);
-    //     const time = getDate.slice(11, 16);
-    //     const newTime = `${year}T${time}:00.000+00:00`
-    //     return newTime;
-    // }
-    // //-----------------------------------------------------------------------
-
-
-
-
-    // //HANDLE START DATE------------------------------------------------------
-    // const handleStartDate = (e) => {
-    //     setStartDate(convertTimeToMongoDB(e.target.value));
-    // };
-    // //-----------------------------------------------------------------------
-
-
-
-    // //END DATE---------------------------------------------------------------
-    // const handleEndDate = (e) => {
-    //     setEndDate(convertTimeToMongoDB(e.target.value));
-    // };
-    // //-----------------------------------------------------------------------
 
 
 
@@ -251,6 +199,10 @@ const CreateChallenges = () => {
             setLevel('Level 1');
         }
     }
+
+    useEffect(()=>{
+        document.title = "Create Challenge | Ai Planet"
+    },[])
 
     
   return (

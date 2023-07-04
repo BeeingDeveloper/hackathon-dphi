@@ -49,7 +49,7 @@ const UserProfile = () => {
   const { id } = useParams();
   
   //  STATE INFORMATION--------------------------------------------
-  const {state} = useContext(StateContext);
+  const {state, setActiveAlert, setIsPositive, setAlertMsg} = useContext(StateContext);
   const [userData, setUserData] = useState(null);
   const ownerId = state?.user?._id;
   const userID = userData?._id;
@@ -85,7 +85,6 @@ const UserProfile = () => {
 
   // HANDELING MODAL
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
 
@@ -102,11 +101,22 @@ const UserProfile = () => {
 
   //  UDPATE USER BIO
   const updateUserBio = (id, data)=>{
+    setActiveAlert(true)          
+    setAlertMsg("Required All fields");
+    setIsPositive(false);
+
     if( !data.introduction || !data.educationalQualification || !data.location || !data.institutionName || !data.github || !data.twitter || !data.linkedIn || !data.resume){
-      alert("required all field")
+
     }else{
       updateUserByID(id, data).then((res)=>{
-        console.log(res)
+        setActiveAlert(true)          
+        setAlertMsg("Required All fields");
+        setIsPositive(true);
+  
+        setTimeout(()=>{
+            setActiveAlert(false);
+            setAlertMsg("");    
+        },3000) 
       }).catch(err=>console.log(err))      
     }
   }
@@ -157,6 +167,7 @@ const UserProfile = () => {
 
   //  ON LOAD------------------------------------------------------
   useEffect(()=>{
+    document.title = "Profile | Ai Planet";
     fetchUser(id);
   },[])
   //---------------------------------------------------------------
@@ -183,7 +194,7 @@ const UserProfile = () => {
             <Box sx={style}>
               <div className='w-full h-full rounded-[10px]'>
                 <h2 className='text-xl font-semibold rounded-t-[10px] py-2 text-center bg-green-parrot text-slate-200'>UPDATE INFORMATION</h2>
-                <form className=' p-2 lg:p-10 text-lg w-full flex flex-col '>
+                <div className=' p-2 lg:p-10 text-lg w-full flex flex-col '>
                   <label className='my-2'>Introduction:</label>
                   <input 
                     name='introduction'
@@ -258,7 +269,7 @@ const UserProfile = () => {
                     className='bg-green-parrot p-2 px-4 rounded-md font-semibold text-slate-200  m-auto'
                     onClick={()=>updateUserBio(ownerId, bioInput)}
                   >UPDATE</button>
-                </form>
+                </div>
               </div>
             </Box>
           </Modal>
@@ -346,13 +357,13 @@ const UserProfile = () => {
         </div>
       </div>
       <div className='background-light-dark-green w-full min-h-[40rem]'>
-          <h2 className='text-center text-3xl py-5 font-semibold text-slate-300'><u>Joined Contest : {userData?.joinedContest?.length}</u></h2>
+          <h2 className='text-center text-xl lg:text-3xl py-5 font-semibold text-slate-300'><u>Joined Contest : {userData?.joinedContest?.length}</u></h2>
 
-          <div className='w-[80%] m-auto grid grid-cols-1 lg:grid-cols-3'>
+          <div className='w-screen lg:w-[80%] m-auto grid grid-cols-1 lg:grid-cols-3'>
             {userData?.joinedContest?.map((elm, i)=>{
               return(
                 <ChallengeCard 
-                  key={i}
+                  key={elm.contest._id}
                   id={elm.contest._id}
                   name={elm.contest.name} 
                   imageURL={elm.contest.imageURL}

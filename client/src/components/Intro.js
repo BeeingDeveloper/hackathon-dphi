@@ -15,7 +15,6 @@ const Intro = () => {
 
 
   return (
-    // <div className=' h-auto w-screen'>
         <div className=' h-auto w-screen '>
             <div className='flex h-[80%] w-[80%] flex-col lg:flex-row gap-10 m-auto my-5 lg:my-20 pb-6'>
                 <div className='w-full lg:w-[65%] h-auto '>
@@ -55,7 +54,6 @@ const Intro = () => {
                 </div>
             </div>
         </div>
-    // </div>
   )
 }
 

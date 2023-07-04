@@ -12,8 +12,7 @@ import { useNavigate } from 'react-router-dom'
 const SignIn = ({setAuth}) => {
 
     //ESSENTIALS----------------------------------------
-    const {state, dispatch} = useContext(StateContext);
-    const {user, hackathons} = state;
+    const { dispatch} = useContext(StateContext);
     const navigate = useNavigate();
     //--------------------------------------------------
 
@@ -54,21 +53,11 @@ const SignIn = ({setAuth}) => {
 
 
 
-    //SIGN OUT------------------------------------------------------------------------------
-    const signOut = ()=>{
-
-        
-        auth.signOut().then(()=>{
-            window.localStorage.setItem("auth", "false");
-            dispatch({type: actionType.SET_USER, user: null});
-        }).catch((err)=>{
-            console.log(err);
-        })
-    }
-    //--------------------------------------------------------------------------------------
     useEffect(()=>{
+        document.title = "Sign In | Ai Planet"
+
         if(window.localStorage.getItem('auth') === 'true'){
-            // navigate('/')
+            navigate('/')
         }
     },[])
 
@@ -88,39 +77,3 @@ const SignIn = ({setAuth}) => {
 }
 
 export default SignIn;
-
-
-
-
-
-
-
-
-
-
-
-// const signInWithGoogle =()=>{
-//     signInWithPopup(auth, authProvider).then((res)=>{
-//         const data = {
-//             name: res.user.displayName,
-//             email: res.user.email,
-//             imageURL: res.user.photoURL,
-//             userID: res.user.uid,
-//         }
-
-
-//         createNewUser(data).then((res)=>{
-//             dispatch({type: actionType.SET_USER, user: res.data});
-//             console.log(res.data)
-//             // window.localStorage.setItem('email', res.data[0].email);
-//             // window.localStorage.setItem("auth", "true");
-//             // navigate('/')
-//             // const cred = firebaseApp.auth().currentUser.multiFactor.user.displayName
-//             // console.log(cred)
-//         }).catch(err=>console.log(err));
-
-
-//     }).catch((err)=>{
-//         console.log(err)
-//     })
-// }
