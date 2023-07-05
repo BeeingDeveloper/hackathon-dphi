@@ -101,9 +101,12 @@ const Navbar = () => {
                             whileHover={{scale: 0.95}}
                             onClick={signOut}
                           >Sign Out</motion.p>
-                          <Link to={`/user-profile/${user?._id}`} className='hover:scale-90 transition-all duration-150'>
-                            Profile
-                          </Link>
+
+                          {user?._id && 
+                            <Link to={`/user-profile/${user?._id}`} className='hover:scale-90 transition-all duration-150'>
+                              Profile
+                            </Link>
+                          }
                           {user?.role === 'admin' && (<Link to='/dashboard'>Dashboard</Link>)}
                       </div>
                     </PopoverContent>
