@@ -54,7 +54,6 @@ const UserProfile = () => {
   const userID = userData?._id;
 
 
-
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [bioInput, setBioInput] = useState({
@@ -69,6 +68,10 @@ const UserProfile = () => {
   });
   //---------------------------------------------------------------
 
+
+
+
+  
 
 
   //  HANDLE CHANGE------------------------------------------------
@@ -93,25 +96,21 @@ const UserProfile = () => {
   const fetchUser = (id)=>{
     fetchUserByID(id).then((res)=>{
         setUserData(res.data)
-    })
+    }).catch(err=>console.log(err))
   }
 
 
-
-  //  UDPATE USER BIO
   const updateUserBio = (id, data)=>{
-    setActiveAlert(true)          
-    setAlertMsg("Required All fields");
-    setIsPositive(false);
 
     if( !data.introduction || !data.educationalQualification || !data.location || !data.institutionName || !data.github || !data.twitter || !data.linkedIn || !data.resume){
-
+      alert("Please fill all the fields")
     }else{
       updateUserByID(id, data).then((res)=>{
+        handleClose();
         setActiveAlert(true)          
-        setAlertMsg("Required All fields");
+        setAlertMsg("Updated successfully");
+        fetchUser(id);
         setIsPositive(true);
-  
         setTimeout(()=>{
             setActiveAlert(false);
             setAlertMsg("");    
@@ -122,13 +121,12 @@ const UserProfile = () => {
 
 
 
-  //  ON CHANGE FILE
+  //  HANDLE RESUME UPLOAD
   const handleFile = (e)=>{
 
     if(bioInput.resume){
       deleteFile(bioInput.resume);
     }
-
 
     setIsUploading(true);
     const fileItem = e.target.files[0];
@@ -193,7 +191,7 @@ const UserProfile = () => {
             <Box sx={style}>
               <div className='w-full h-full rounded-[10px]'>
                 <h2 className='text-xl font-semibold rounded-t-[10px] py-2 text-center bg-green-parrot text-slate-200'>UPDATE INFORMATION</h2>
-                <div className=' p-2 lg:p-10 text-lg w-full flex flex-col '>
+                <form className=' p-2 lg:p-10 text-lg w-full flex flex-col '>
                   <label className='my-2'>Introduction:</label>
                   <input 
                     name='introduction'
@@ -268,7 +266,7 @@ const UserProfile = () => {
                     className='bg-green-parrot p-2 px-4 rounded-md font-semibold text-slate-200  m-auto'
                     onClick={()=>updateUserBio(ownerId, bioInput)}
                   >UPDATE</button>
-                </div>
+                </form>
               </div>
             </Box>
           </Modal>
