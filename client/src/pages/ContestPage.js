@@ -51,15 +51,24 @@ const ContestPage = () => {
 
 
     // FETCH ALL HACKATHONS----------------------------------------------------------------
-    const fetchHackathonItem = (id)=>{
-        fetchHackathonByID(id).then((res)=>{
-            setParticipants(res.data.participants);
-            setHackathonItem(res.data);
-            setTimeout(()=>{
-                setIsLoading(false);            //  WHEN DATA FETCHED
-            },2000);
-        }).catch(err=>console.log(err))
-    }
+    const fetchHackathonItem = (id) => {
+        fetchHackathonByID(id)
+          .then((res) => {
+            if (res && res.data && res.data.participants) {
+              setParticipants(res.data.participants);
+              setHackathonItem(res.data);
+            } else {
+              console.log("Invalid response:", res);
+            }
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 2000);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      };
     //-------------------------------------------------------------------------------------
 
 
@@ -160,7 +169,7 @@ const ContestPage = () => {
                     <div className='flex w-fit gap-5 relative top-5 cursor-pointer'>
                         <div className='flex flex-col' onClick={()=>setTab(1)} >
                             <h2 className='font-semibold text-lg lg:text-2xl w-fit m-auto'>Overview</h2>
-                            <div className={` transition-all duration-150 top-10 h-[7px] bg-green-parrot absolute ${tab == 1 ? 'left-0 w-24 lg:w-32' : 'left-[6rem] lg:left-[8rem] w-[10rem] lg:w-[12rem]'}`}></div>
+                            <div className={` transition-all duration-150 top-10 h-[7px] bg-green-parrot absolute ${tab === 1 ? 'left-0 w-24 lg:w-32' : 'left-[6rem] lg:left-[8rem] w-[10rem] lg:w-[12rem]'}`}></div>
                         </div>
                         <h2
                             onClick={()=>setTab(2)} 
@@ -180,11 +189,11 @@ const ContestPage = () => {
                     </div>
                 ) : 
                     isLoading ? 
-                        <div className='w-fit m-auto mt-10'>
-                            <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
-                                <CircularProgress color="success" />
-                            </Stack>
-                        </div>
+                            <div className='w-fit m-auto mt-10'>
+                                <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+                                    <CircularProgress color="success" />
+                                </Stack>
+                            </div>
 
                     :   participants.length >0 ?               
                         <div className='w-[95%] lg:w-[75%] m-auto my-10 shadow-lg shadow-slate-400'>
@@ -196,12 +205,12 @@ const ContestPage = () => {
                             {
                                 participants?.map((elm) => (
                                     <UserItem
-                                    key={elm.id}
-                                    userID={elm.user._id}
-                                    name={elm.user.name}
-                                    email={elm.user.email}
-                                    date={elm.dateJoined}
-                                    profilePic={elm.user.imageURL}
+                                        key={elm.user._id}
+                                        userID={elm.user._id}
+                                        name={elm.user.name}
+                                        email={elm.user.email}
+                                        date={elm.dateJoined}
+                                        profilePic={elm.user.imageURL}
                                     />
                                 ))
                                 }

@@ -1,14 +1,12 @@
 import axios from 'axios';
 
-const baseURL = `http://localhost:5900/`;
-
-
+const baseURL = process.env.REACT_APP_SERVER_URL;
 
 
 //============================ USERS API ===============================
 export const validateUser = async(token)=>{
     try {
-        const res = await axios.get(`${baseURL}api/user/signin`,{
+        const res = await axios.get(`${baseURL}/api/user/signin`,{
             headers: { Authorization: "Bearer "+token}
         });
         return res.data;
@@ -22,7 +20,7 @@ export const validateUser = async(token)=>{
 
 export const createNewUser = async(data)=>{
     try {
-        const res = await axios.post(`${baseURL}api/user/signin`, {...data});
+        const res = await axios.post(`${baseURL}/api/user/signin`, {...data});
         return res.data;
     } catch (error) {
         return null;
@@ -35,7 +33,7 @@ export const createNewUser = async(data)=>{
 export const fetchUserData = async(email)=>{
 
     try {
-        const res = await axios.get(`${baseURL}api/user/get/${email}`);
+        const res = await axios.get(`${baseURL}/api/user/get/${email}`);
         return res.data;
     } catch (error) {
         return null;
@@ -49,7 +47,7 @@ export const fetchUserData = async(email)=>{
 export const fetchAllUsers = async()=>{
 
     try {
-        const res = await axios.get(`${baseURL}api/user/all-users`);
+        const res = await axios.get(`${baseURL}/api/user/all-users`);
         return res.data;
     } catch (error) {
         return null;
@@ -61,7 +59,7 @@ export const fetchAllUsers = async()=>{
 
 export const fetchUserByID = async(id)=>{
     try {
-        const res = await axios.get(`${baseURL}api/user/fetch-user/${id}`);
+        const res = await axios.get(`${baseURL}/api/user/fetch-user/${id}`);
         return res.data;
     } catch (error) {
         return null;
@@ -72,7 +70,7 @@ export const fetchUserByID = async(id)=>{
 
 export const updateUserByID = async(id, data)=>{
     try {
-        const res = await axios.put(`${baseURL}api/user/update-user/${id}`, {...data});
+        const res = await axios.put(`${baseURL}/api/user/update-user/${id}`, {...data});
         return res.data;
     } catch (error) {
         return null;
@@ -111,7 +109,7 @@ export const updateUserByID = async(id, data)=>{
 //========================= HACKATHONS API =============================
 export const createNewHackathon = async(data)=>{
     try {
-        const res = await axios.post(`${baseURL}api/hackathon/create`, {...data});
+        const res = await axios.post(`${baseURL}/api/hackathon/create`, {...data});
         return res.data;
     } catch (error) {
         return null;
@@ -124,7 +122,7 @@ export const createNewHackathon = async(data)=>{
 //FETCH ALL HACKATHONS
 export const fetchHackathons = async()=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/get-hackathons`);
+        const res = await axios.get(`${baseURL}/api/hackathon/get-hackathons`);
         return res.data;
     } catch (error) {
         return null;
@@ -136,8 +134,8 @@ export const fetchHackathons = async()=>{
 //  UPDATED PARTICIAPANTS
 export const participateContest = async (contestID, userID) => {
     try {
-      const userUpdatedRes = await axios.post(`${baseURL}api/user/get-contest/${contestID}/${userID}`);
-      const contestUpdatedRes = await axios.post(`${baseURL}api/hackathon/get-contest/${contestID}/${userID}`);
+      const userUpdatedRes = await axios.post(`${baseURL}/api/user/get-contest/${contestID}/${userID}`);
+      const contestUpdatedRes = await axios.post(`${baseURL}/api/hackathon/get-contest/${contestID}/${userID}`);
 
       const res = {user: userUpdatedRes, contest: contestUpdatedRes}
 
@@ -156,7 +154,7 @@ export const participateContest = async (contestID, userID) => {
 //FETCH SINGLE HACKATHON
 export const fetchHackathonByID = async(id)=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/fetch-participants/${id}`)
+        const res = await axios.get(`${baseURL}/api/hackathon/fetch-participants/${id}`)
         return res;
     } catch (error) {
         return null;
@@ -168,7 +166,7 @@ export const fetchHackathonByID = async(id)=>{
 // FILTER BY UPCOMING CONTEST
 export const filterByUpcoming = async()=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/filter/upcoming`);
+        const res = await axios.get(`${baseURL}/api/hackathon/filter/upcoming`);
         return res.data;
     } catch (error) {
         return null;
@@ -180,7 +178,7 @@ export const filterByUpcoming = async()=>{
 // FITLER BY ACTIVE CONTEST
 export const filterByActive = async()=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/filter/active`);
+        const res = await axios.get(`${baseURL}/api/hackathon/filter/active`);
         return res.data;
     } catch (error) {
         return null;
@@ -191,7 +189,7 @@ export const filterByActive = async()=>{
 // FILTER BY PASSED CONTEST
 export const filterByPassed = async()=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/filter/passed`);
+        const res = await axios.get(`${baseURL}/api/hackathon/filter/passed`);
         return res.data;
     } catch (error) {
         return null;
@@ -204,7 +202,7 @@ export const filterByPassed = async()=>{
 //  FILTER BY LEVEL
 export const filterByLevel = async(level)=>{
     try {
-        const res = await axios.get(`${baseURL}api/hackathon/filter/level/${level}`);
+        const res = await axios.get(`${baseURL}/api/hackathon/filter/level/${level}`);
         console.log(res);
         return res.data;
     } catch (error) {

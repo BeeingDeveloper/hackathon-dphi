@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../utils/style.css'
 import { Link } from 'react-router-dom';
-
+import USER_ICON from '../assets/images/icons/account.png'
 
 
 
@@ -16,7 +16,7 @@ const UserItem = ({name, email, date, profilePic, userID}) => {
   return (
     <>
     <div className='flex font-bold p-2 w-full text-slate-900' onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}>
-        <img src={profilePic} alt='dp' className='rounded-full h-8 mx-5' />
+        <img src={profilePic ? profilePic : USER_ICON } alt='dp' className='rounded-full h-8 mx-5' />
 
           <h2 className='w-[33.3%] my-auto text-sm lg:text-xl hidden lg:block'>{name}</h2>
           <Link to={`/user-profile/${userID}`} className='block lg:hidden'>

@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react'
-import CALENDER from '../assets/images/icons/uil_calender.svg'
 import '../utils/style.css'
 import {motion} from 'framer-motion'
 import { storage, } from '../config/firebase.config'
-import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage'
+import { ref, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage'
 import {MdCloudUpload} from 'react-icons/md'
 import {MdDeleteForever} from 'react-icons/md'
 
@@ -100,7 +99,7 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
                 </label>
             ) : (
                 <div className='w-full h-fit bg-green-parrot rounded-md'>
-                    <img src={imageURL} className='h-full w-full rounded-xl p-1' />
+                    <img alt='img' src={imageURL} className='h-full w-full rounded-xl p-1' />
                     <motion.div whileHover={{scale: 1.1}} className=' my-2 ml-2 w-fit p-1 text-3xl rounded-full left-[1rem] bg-red-500 cursor-pointer'>
                       <MdDeleteForever onClick={()=>deleteIMG(imageURL)} />
                     </motion.div>
@@ -130,7 +129,7 @@ const ImageInput = ({imageURL,setImageURL, setIsImageLoading, setImageUploadingP
 
 const CreateChallenges = () => {
 
-    const {state, dispatch, activeAlert, setActiveAlert, alertMsg, setAlertMsg, isPositive, setIsPositive} = useContext(StateContext);
+    const {state, dispatch, setActiveAlert, setAlertMsg, setIsPositive} = useContext(StateContext);
     const { user} = state
     
     const userID = user?.user_id;

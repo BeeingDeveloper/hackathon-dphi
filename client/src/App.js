@@ -6,7 +6,7 @@ import CreateChallenges from './pages/CreateChallenges';
 import SignIn from './pages/SignIn';
 import { useContext, useEffect, useState } from 'react';
 import { StateContext } from './context/StateProvider';
-import { fetchHackathons, fetchUserData, validateUser } from './api/api';
+import { fetchHackathons, validateUser } from './api/api';
 import { actionType } from './context/reducer';
 import { getAuth } from 'firebase/auth';
 import { firebaseApp } from './config/firebase.config';
@@ -19,8 +19,8 @@ import CustomAlert from './components/CustomAlert';
 
 function App() {
   const navigate = useNavigate();
-  const {state, dispatch} = useContext(StateContext);
-  const {user, hackathons} = state;
+  const { dispatch} = useContext(StateContext);
+  // const {user, hackathons} = state;
 
   const firebaseAuth = getAuth(firebaseApp);
 

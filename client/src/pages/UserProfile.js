@@ -9,9 +9,8 @@ import {HiMail} from 'react-icons/hi'
 import { StateContext } from '../context/StateProvider';
 import '../utils/style.css'
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import {storage, firebaseApp} from '../config/firebase.config'
+import {storage, } from '../config/firebase.config'
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useTheme } from '@mui/material';
 import ChallengeCard from '../components/ChallengeCard';

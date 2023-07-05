@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {RiSearchLine} from 'react-icons/ri'
 import { fetchHackathons, filterByLevel } from '../api/api'
-import { actionType } from '../context/reducer'
-import { StateContext } from '../context/StateProvider'
 import ChallengeCard from './ChallengeCard'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,18 +9,31 @@ import Select from '@mui/material/Select';
 import { filterByActive } from '../api/api'
 import { filterByPassed } from '../api/api'
 import { filterByUpcoming } from '../api/api'
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+
+
+
+
+
 
 const ContestList = () => {
 
     const [contestList, setContestList] = useState([]);
     const [selected, setSelected] = useState('all');
     const [searchValue, setSearchValue] = useState('');
-  
+    const [isLoading, setIsLoading] = useState(true); 
+
     // FETCH ALL HACKATHONS
     const fetchAllHackathons = () => {
       fetchHackathons()
         .then((res) => {
           setContestList(res.data);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
         })
         .catch((err) => console.log(err));
     };
@@ -101,8 +112,8 @@ const ContestList = () => {
     <div className="w-full background-dark">
       <div className="w-[95%] lg:w-[80%] m-auto py-20 flex flex-col">
         <h2 className="w-fit m-auto text-2xl font-semibold my-10">Explore Challenges</h2>
-        <div className="w-full lg:w-[75%] m-auto flex flex-col md:flex-row gap-5 justify-between text-black pb-10">
-          <div className="flex bg-white rounded-md w-full py-2 h-10">
+        <div className="w-full lg:w-[75%] m-auto flex flex-col md:flex-row gap-5 justify-between  text-black pb-10">
+          <div className="flex bg-white rounded-md w-4/5 lg:w-[300%] m-auto py-2 h-10 ">
             <RiSearchLine className="my-auto text-2xl ml-5" />
             <input
               className="bg-white rounded-md w-full outline-none ml-2"
@@ -110,8 +121,8 @@ const ContestList = () => {
               onChange={handleSearchItem}
             />
           </div>
-          <div className="flex flex-col w-40">
-            <FormControl sx={{ minWidth:{xs: '95vw', md: 170}, margin:{xs:'auto', md: '0'}, background: 'white', borderRadius: '0.25rem', display: 'flex', }} size="small">
+          <div className="flex flex-col w-full">
+            <FormControl sx={{ minWidth:{xs: '80%', md: 170}, margin:{xs:'auto', md: '0'}, background: 'white', borderRadius: '0.25rem', display: 'flex', }} size="small">
               <InputLabel id="demo-select-small">Filter</InputLabel>
               <Select
                 labelId="demo-select-small"
@@ -142,24 +153,38 @@ const ContestList = () => {
       <div className="w-[95%] lg:w-[80%] m-auto flex flex-col"></div>
     </div>
 
-    <div className="w-[95%] lg:w-[85%] m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20 gap-10">
-    {contestList.length > 0 ? (
-          contestList.map((elm, i) => (
-            <ChallengeCard
-              key={i}
-              id={elm._id}
-              name={elm.name}
-              imageURL={elm.imageURL}
-              description={elm.description}
-              startDate={elm.startDate}
-              endDate={elm.endDate}
-              level={elm.level}
-            />
-          ))
-        ) : (
-          <h2 className="text-center font-semibold pt-10">NO DATA FOUND</h2>
-        )}
-    </div>
+
+    { 
+    isLoading ? <div className='w-fit mt-10 m-auto'>
+                <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+                    <CircularProgress color="success" />
+                </Stack>
+            </div> 
+          :
+          <div className="w-[95%] lg:w-[85%] m-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-20 gap-10">
+          {
+      
+          contestList.length > 0 ? (
+                contestList.map((elm, i) => (
+                  <ChallengeCard
+                    key={i}
+                    id={elm._id}
+                    name={elm.name}
+                    imageURL={elm.imageURL}
+                    description={elm.description}
+                    startDate={elm.startDate}
+                    endDate={elm.endDate}
+                    level={elm.level}
+                  />
+                ))
+              ) : (
+                <h2 className="text-center font-semibold pt-10">NO DATA FOUND</h2>
+              )}
+          </div>
+
+    }
+
+
   </div>
   )
 }

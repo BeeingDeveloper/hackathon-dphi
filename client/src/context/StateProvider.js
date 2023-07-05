@@ -8,8 +8,8 @@ const StateProvider = (props) => {
 
     const initialState = {
         user: null,
-        hackathons: null,
-        allUsers: null
+        hackathons: [],
+        allUsers: []
     }
 
 
