@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const serverURL = process.env.REACT_APP_SERVER_URL;
-// const serverURL = "http://localhost:5900";
+// const serverURL = process.env.REACT_APP_SERVER_URL;
+const serverURL = "http://localhost:5900";
 
 
 //============================ USERS API ===============================
